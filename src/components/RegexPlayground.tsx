@@ -1,3 +1,5 @@
+import useIsMounted from '../hooks/useIsMounted'
+
 import React, { FunctionComponent, useCallback } from 'react'
 import { useQueryParam, withDefault, ArrayParam, StringParam } from 'use-query-params'
 
@@ -25,6 +27,7 @@ const MatchBox: FunctionComponent<MatchBoxProps> = ({
 }
 
 const RegexPlayground: FunctionComponent = () => {
+  const isMounted = useIsMounted()
   const [pattern, setPattern] = useQueryParam('pattern', withDefault(StringParam, ''))
   const [flags, setFlags] = useQueryParam('flags', withDefault(StringParam, ''))
   const [matches, setMatches] = useQueryParam('matches[]', withDefault(ArrayParam, ['']))
@@ -48,6 +51,8 @@ const RegexPlayground: FunctionComponent = () => {
     re = new RegExp('')
     errorMessage = err.message
   }
+
+  if (!isMounted) return <div />
 
   return (
     <div>
