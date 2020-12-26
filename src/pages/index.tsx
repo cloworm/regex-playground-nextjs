@@ -3,7 +3,7 @@ import RegexPlayground from '../components/RegexPlayground'
 
 export default function Home() {
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Regex Playground</title>
         <link rel="icon" href="/favicon.ico" />
