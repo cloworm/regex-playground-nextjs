@@ -1,12 +1,13 @@
-import React, { FunctionComponent, useState, useCallback } from 'react'
+import React, { FunctionComponent, useCallback } from 'react'
+import { useQueryState } from 'use-location-state'
 
-interface MatcherBoxProps {
+interface MatchBoxProps {
   onChange: (value: string) => void
   pattern: RegExp,
   value: string,
 }
 
-const MatcherBox: FunctionComponent<MatcherBoxProps> = ({
+const MatchBox: FunctionComponent<MatchBoxProps> = ({
   onChange,
   pattern,
   value,
@@ -24,9 +25,9 @@ const MatcherBox: FunctionComponent<MatcherBoxProps> = ({
 }
 
 const RegexPlayground: FunctionComponent = () => {
-  const [pattern, setPattern] = useState<string>('')
-  const [matchers, setMatchers] = useState<string[]>([''])
-  const [flags, setFlags] = useState<string>('')
+  const [pattern, setPattern] = useQueryState<string>('pattern', '')
+  const [flags, setFlags] = useQueryState<string>('flags', '')
+  const [matches, setMatches] = useQueryState<string[]>('matches[]', [''])
 
   const handlePatternChange = useCallback((event) => {
     setPattern(event.target.value)
@@ -61,7 +62,7 @@ const RegexPlayground: FunctionComponent = () => {
             {/* <Share
               pattern={pattern}
               flags={flags}
-              matches={matchers}
+              matches={matches}
             /> * /}
           </div>
         </div>
@@ -117,7 +118,7 @@ const RegexPlayground: FunctionComponent = () => {
             </div>
             <br />
             {
-              matchers.map((value, i) => {
+              matches.map((value, i) => {
                 return (
                   <div key={i}>
                     {/* <MatchBox
@@ -125,15 +126,15 @@ const RegexPlayground: FunctionComponent = () => {
                       value={value}
                       onChange={this.handleMatchBoxChange.bind(null, i)}
                     /> */}
-                    <MatcherBox
+                    <MatchBox
                       pattern={re}
                       value={value}
                       onChange={(value) => {
-                        setMatchers((prevMatchers) => {
+                        setMatches((prevMatches) => {
                           return [
-                            ...prevMatchers.slice(0, i),
+                            ...prevMatches.slice(0, i),
                             value,
-                            ...prevMatchers.slice(i + 1),
+                            ...prevMatches.slice(i + 1),
                           ]
                         })
                       }}
@@ -144,9 +145,9 @@ const RegexPlayground: FunctionComponent = () => {
             }
             <button role='button'
               onClick={() => {
-                setMatchers((prevMatchers) => {
+                setMatches((prevMatches) => {
                   return [
-                    ...prevMatchers,
+                    ...prevMatches,
                     '',
                   ]
                 })
@@ -155,11 +156,11 @@ const RegexPlayground: FunctionComponent = () => {
               +
             </button>
             {
-              matchers.length > 1 && <button role='button'
+              matches.length > 1 && <button role='button'
                 onClick={() => {
-                  setMatchers((prevMatchers) => {
+                  setMatches((prevMatches) => {
                     return [
-                      ...prevMatchers.slice(0, prevMatchers.length - 1),
+                      ...prevMatches.slice(0, prevMatches.length - 1),
                     ]
                   })
                 }}

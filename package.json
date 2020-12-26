@@ -11,7 +11,8 @@
     "@material-ui/core": "^4.11.2",
     "next": "10.0.0",
     "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "use-location-state": "^2.5.0"
   },
   "devDependencies": {
     "@types/node": "^14.14.16",
