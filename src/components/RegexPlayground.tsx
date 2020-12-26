@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useCallback } from 'react'
-import { useQueryState } from 'use-location-state'
+import { useQueryParam, withDefault, ArrayParam, StringParam } from 'use-query-params'
 
 interface MatchBoxProps {
   onChange: (value: string) => void
@@ -25,9 +25,9 @@ const MatchBox: FunctionComponent<MatchBoxProps> = ({
 }
 
 const RegexPlayground: FunctionComponent = () => {
-  const [pattern, setPattern] = useQueryState<string>('pattern', '')
-  const [flags, setFlags] = useQueryState<string>('flags', '')
-  const [matches, setMatches] = useQueryState<string[]>('matches[]', [''])
+  const [pattern, setPattern] = useQueryParam('pattern', withDefault(StringParam, ''))
+  const [flags, setFlags] = useQueryParam('flags', withDefault(StringParam, ''))
+  const [matches, setMatches] = useQueryParam('matches[]', withDefault(ArrayParam, ['']))
 
   const handlePatternChange = useCallback((event) => {
     setPattern(event.target.value)
