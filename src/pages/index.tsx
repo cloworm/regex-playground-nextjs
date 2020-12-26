@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
 import RegexPlayground from '../components/RegexPlayground'
 
 export default function Home() {
