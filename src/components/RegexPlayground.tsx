@@ -56,22 +56,6 @@ const RegexPlayground: FunctionComponent = () => {
 
   return (
     <div>
-      {/* <AppBar
-        title="RegEx Playground"
-        // titleStyle={styles.title}
-        style={styles.appBar}
-        // iconElementLeft={<IconButton style={styles.logo}><img src='logo.svg' /></IconButton>}
-      >
-        <div className='row'>
-          <div className='col-xs-12'>
-            {/* <Share
-              pattern={pattern}
-              flags={flags}
-              matches={matches}
-            /> * /}
-          </div>
-        </div>
-      </AppBar> */}
       <div className='container-fluid'>
         <div className='row'>
           <div className='col-xs-12 col-md-8'>
@@ -83,15 +67,8 @@ const RegexPlayground: FunctionComponent = () => {
                     <input
                       autoCapitalize='off'
                       autoCorrect='off'
-                      // floatingLabelText='Pattern'
-                      // floatingLabelStyle={styles.floatingLabel}
                       value={pattern}
                       onChange={handlePatternChange}
-                      // style={styles.patternField}
-                      // ref='pattern'
-                      // errorText={errorMessage}
-                      // underlineStyle={styles.underline}
-                      // underlineFocusStyle={styles.underlineFocus}
                     />
                     <span>/</span>
                   </span>
@@ -101,14 +78,8 @@ const RegexPlayground: FunctionComponent = () => {
                     <input
                       autoCapitalize='off'
                       autoCorrect='off'
-                      // floatingLabelText='Flags'
-                      // floatingLabelStyle={styles.floatingLabel}
                       value={flags}
                       onChange={handleFlagsChange}
-                      // style={styles.flagsField}
-                      // ref='flags'
-                      // underlineStyle={styles.underline}
-                      // underlineFocusStyle={styles.underlineFocus}
                     />
                   </span>
                 </div>
@@ -126,11 +97,6 @@ const RegexPlayground: FunctionComponent = () => {
               matches.map((value, i) => {
                 return (
                   <div key={i}>
-                    {/* <MatchBox
-                      pattern={re}
-                      value={value}
-                      onChange={this.handleMatchBoxChange.bind(null, i)}
-                    /> */}
                     <MatchBox
                       pattern={re}
                       value={value}
@@ -173,11 +139,6 @@ const RegexPlayground: FunctionComponent = () => {
                 -
               </button>
             }
-          </div>
-          <div className='col-xs-12 col-md-4'>
-            {/* <RegexReference
-              onClickChip={this.handleClickChip}
-            /> */}
           </div>
         </div>
       </div>
