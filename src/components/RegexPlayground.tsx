@@ -1,6 +1,6 @@
 import useIsMounted from '../hooks/useIsMounted'
 
-import React, { FunctionComponent, useCallback } from 'react'
+import React, { FunctionComponent, useCallback, useMemo } from 'react'
 import { useQueryParam, withDefault, ArrayParam, StringParam } from 'use-query-params'
 
 interface MatchBoxProps {
@@ -18,11 +18,19 @@ const MatchBox: FunctionComponent<MatchBoxProps> = ({
     onChange(event.target.value)
   }, [onChange])
 
-  return <div>
+  const match = useMemo<RegExpMatchArray | void>(() => {
+    return value.match(pattern)
+  }, [value, pattern])
+
+  return <div style={{ border: '1px solid #E0E0E0', padding: '20px' }}>
     <input value={value} onChange={handleChange} />
-    {/* TODO: Properly show the matches */}
-    {/* TODO: List out the match-groups? */}
-    {value.match(pattern)}
+    <h3>Match result:</h3>
+    {match ? match[0] : 'No matches yet' }
+
+    <h3>Match groups:</h3>
+    {match ? match.slice(1).map((group, idx) => {
+      return <div>{idx + 1}: {group}</div>
+    }) : 'No matches yet'}
   </div>
 }
 
