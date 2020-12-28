@@ -1,30 +1,47 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Regex Playground
 
-## Getting Started
+React Next.js JAMstack hosted on Vercel.
 
-First, run the development server:
+Test a Regex pattern against test strings and see the match groups. App state is persisted to query params so your examples are shareable!
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## [Visit the Demo](https://regex-playground.cloworm.vercel.app/)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Screenshots
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+This example shows 3 different strings being tested against an email address regex pattern.
 
-## Learn More
+Since all playgrounds are shareable, [here's the link to see it for yourself](https://regex-playground.cloworm.vercel.app/?flags=g&matches%5B%5D=johnny.appleseed%40gmail.com&matches%5B%5D=i%20am%20not%20an%20email%20address&matches%5B%5D=i%20contain%20an%20email%40address.com%20but%20the%20regex%20has%20%5E%20and%20%24&pattern=%5E%5Ba-zA-Z0-9._%25-%5D%2B%40%5Ba-zA-Z0-9.-%5D%2B.%5Ba-zA-Z%5D%7B2%2C4%7D%24)
 
-To learn more about Next.js, take a look at the following resources:
+[<img width="500" alt="Example with 3 different strings tested against an email address regex" src="https://user-images.githubusercontent.com/5566310/103177378-f37f0d80-4847-11eb-8be6-2e850eb4b68a.png">](https://regex-playground.cloworm.vercel.app/?flags=g&matches%5B%5D=johnny.appleseed%40gmail.com&matches%5B%5D=i%20am%20not%20an%20email%20address&matches%5B%5D=i%20contain%20an%20email%40address.com%20but%20the%20regex%20has%20%5E%20and%20%24&pattern=%5E%5Ba-zA-Z0-9._%25-%5D%2B%40%5Ba-zA-Z0-9.-%5D%2B.%5Ba-zA-Z%5D%7B2%2C4%7D%24)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+* Try out a regular expression against many test strings.
+* App state is persisted to query params so your examples are shareable.
+* Includes a reference of regexp special characters with usage examples.
 
-## Deploy on Vercel
+## Technology Used
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* [Next.js](https://nextjs.org/)
+* [tailwindcss](tailwindcss)
+* Hosted on [Vercel](https://vercel.com/)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Development
+
+1. Clone repo
+
+      ```
+      git clone https://github.com/cloworm/regex-playground-nextjs
+      ```
+
+2. Install Dependencies
+
+      ```
+      npm i
+      ```
+
+3. Run the dev server
+
+      ```
+      npm run dev
+      ```
