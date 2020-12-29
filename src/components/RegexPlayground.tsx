@@ -67,13 +67,14 @@ const RegexPlayground: FunctionComponent = () => {
 
   return (
     <div className="text-center">
+      <h1 className="text-left text-theme_slateBlue font-semibold text-2xl pb-12">RegEx Playground</h1>
       <Pattern />
       <Match />
       <FabButton>
         <p className="text-white font-bold">+</p>
       </FabButton>
 
-      <div className='container-fluid'>
+      {/* <div className='container-fluid'>
         <div className='row'>
           <div className='col-xs-12 col-md-8'>
             <div className='container-fluid'>
@@ -158,18 +159,7 @@ const RegexPlayground: FunctionComponent = () => {
             }
           </div>
         </div>
-      </div>
-      <footer>
-        <div className='container-fluid'>
-          <a href='http://www.github.com/cloworm' target='_blank' rel='noopener noreferrer'>
-            <img src='/github.png' />
-            { ' ' }
-            cloworm
-          </a>
-          { ' ' }
-          © 2020
-        </div>
-      </footer>
+      </div> */}
     </div>
   )
 }
