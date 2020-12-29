@@ -1,4 +1,5 @@
 import NextJsQueryParamProvider from '../providers/NextJsQueryParamProvider'
+import 'tailwindcss/tailwind.css'
 
 function MyApp({ Component, pageProps }) {
   return (
