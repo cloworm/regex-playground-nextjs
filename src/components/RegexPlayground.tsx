@@ -2,6 +2,9 @@ import useIsMounted from '../hooks/useIsMounted'
 
 import React, { FunctionComponent, useCallback, useMemo } from 'react'
 import { useQueryParam, withDefault, ArrayParam, StringParam } from 'use-query-params'
+import Pattern from './Pattern'
+import Match from './Match'
+import FabButton from './FabButton'
 
 interface MatchBoxProps {
   onChange: (value: string) => void
@@ -63,7 +66,13 @@ const RegexPlayground: FunctionComponent = () => {
   if (!isMounted) return <div />
 
   return (
-    <div>
+    <div className="text-center">
+      <Pattern />
+      <Match />
+      <FabButton>
+        <p className="text-white font-bold">+</p>
+      </FabButton>
+
       <div className='container-fluid'>
         <div className='row'>
           <div className='col-xs-12 col-md-8'>

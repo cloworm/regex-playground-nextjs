@@ -1,7 +1,10 @@
-import NextJsQueryParamProvider from '../providers/NextJsQueryParamProvider'
+import { FunctionComponent } from 'react'
+import type { AppProps } from 'next/app'
 import 'tailwindcss/tailwind.css'
 
-function MyApp({ Component, pageProps }) {
+import NextJsQueryParamProvider from '../providers/NextJsQueryParamProvider'
+
+const MyApp: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
   return (
     <NextJsQueryParamProvider>
       <Component {...pageProps} />
