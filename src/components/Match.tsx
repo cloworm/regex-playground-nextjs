@@ -1,9 +1,8 @@
 import { FunctionComponent, useCallback, useMemo } from 'react'
-import { useRecoilState } from 'recoil'
+import { useQueryParam, withDefault, ArrayParam, StringParam } from 'use-query-params'
 
 import Card from './Card'
 import Textarea from './Textarea'
-import regexState from '../recoil/atoms/regex.atom'
 
 interface Props {
   value: string
@@ -11,7 +10,8 @@ interface Props {
 }
 
 const Match: FunctionComponent<Props> = ({ value, onChange }) => {
-  const [{ pattern, flags }] = useRecoilState(regexState)
+  const [pattern, setPattern] = useQueryParam('pattern', withDefault(StringParam, ''))
+  const [flags, setFlags] = useQueryParam('flags', withDefault(StringParam, ''))
   const handleChange = useCallback((event) => {
     onChange(event.target.value)
   }, [onChange])

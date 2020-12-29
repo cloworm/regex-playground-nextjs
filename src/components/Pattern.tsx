@@ -1,37 +1,37 @@
 import { FunctionComponent, useCallback } from 'react'
-import { useQueryParam, withDefault, ArrayParam, StringParam } from 'use-query-params'
-import { useRecoilState } from 'recoil'
+import { useQueryParam, withDefault, ArrayParam, StringParam, useQueryParams } from 'use-query-params'
 
 import Card from './Card'
 import Input from './Input'
-import regexState from '../recoil/atoms/regex.atom'
 
 const Pattern: FunctionComponent = () => {
-  const [{ pattern, flags }, setRegex] = useRecoilState(regexState)
+  const [{ pattern, flags }, setQuery] = useQueryParams({
+    pattern: withDefault(StringParam, ''),
+    flags: withDefault(StringParam, ''),
+  })
 
   const handlePatternChange = useCallback((event) => {
-    setRegex({
-      flags,
+    setQuery({
       pattern: event.target.value
     })
-  }, [setRegex, flags])
+  }, [setQuery])
   const handleFlagsChange = useCallback((event) => {
-    setRegex({
-      pattern,
+    setQuery({
       flags: event.target.value
     })
-  }, [setRegex, pattern])
-  // const handleClickClear = useCallback(() => {
-  //   setFlags('')
-  //   setPattern('')
-  // }, [setFlags, setPattern])
+  }, [setQuery])
+  const handleClickClear = useCallback(() => {
+    setQuery({
+      pattern: '',
+      flags: ''
+    })
+  }, [setQuery])
 
-  let re: RegExp
   let errorMessage: string|void
   try {
-    re = new RegExp(pattern, flags)
+    new RegExp(pattern, flags)
   } catch(err) {
-    re = new RegExp('')
+    new RegExp('')
     errorMessage = err.message
   }
 
@@ -41,13 +41,16 @@ const Pattern: FunctionComponent = () => {
         <div className="w-9/12">
           <Input label="pattern" value={pattern} onChange={handlePatternChange} />
         </div>
-        <div className="">
+        <div>
           <Input label="flags" value={flags} onChange={handleFlagsChange} />
         </div>
       </div>
       <div>
         {errorMessage ? errorMessage : null}
       </div>
+      <a onClick={handleClickClear} className="text-sm uppercase text-theme_textGray font-bold hover:text-theme_hotPink cursor-pointer">
+        CLEAR
+      </a>
     </Card>
   )
 }
