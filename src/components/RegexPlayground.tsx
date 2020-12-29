@@ -39,38 +39,69 @@ const MatchBox: FunctionComponent<MatchBoxProps> = ({
 
 const RegexPlayground: FunctionComponent = () => {
   const isMounted = useIsMounted()
-  const [pattern, setPattern] = useQueryParam('pattern', withDefault(StringParam, ''))
-  const [flags, setFlags] = useQueryParam('flags', withDefault(StringParam, ''))
+  // const [pattern, setPattern] = useQueryParam('pattern', withDefault(StringParam, ''))
+  // const [flags, setFlags] = useQueryParam('flags', withDefault(StringParam, ''))
   const [matches, setMatches] = useQueryParam('matches[]', withDefault(ArrayParam, ['']))
 
-  const handlePatternChange = useCallback((event) => {
-    setPattern(event.target.value)
-  }, [])
-  const handleFlagsChange = useCallback((event) => {
-    setFlags(event.target.value)
-  }, [])
-  const handleClickClear = useCallback(() => {
-    setFlags('')
-    setPattern('')
+  // const handlePatternChange = useCallback((event) => {
+  //   setPattern(event.target.value)
+  // }, [])
+  // const handleFlagsChange = useCallback((event) => {
+  //   setFlags(event.target.value)
+  // }, [])
+  // const handleClickClear = useCallback(() => {
+  //   setFlags('')
+  //   setPattern('')
+  // }, [])
+
+  // let re: RegExp
+  // let errorMessage: string|void
+  // try {
+  //   re = new RegExp(pattern, flags)
+  // } catch(err) {
+  //   re = new RegExp('')
+  //   errorMessage = err.message
+  // }
+  const handleChange = useCallback((event) => {
+    console.log('event', event)
+    // onChange(event.target.value)
   }, [])
 
-  let re: RegExp
-  let errorMessage: string|void
-  try {
-    re = new RegExp(pattern, flags)
-  } catch(err) {
-    re = new RegExp('')
-    errorMessage = err.message
-  }
+  const onClick = useCallback(() => {
+    setMatches((prevMatches) => {
+      return [
+        ...prevMatches,
+        '',
+      ]
+    })
+  }, [setMatches])
 
   if (!isMounted) return <div />
 
   return (
-    <div className="text-center">
-      <h1 className="text-left text-theme_slateBlue font-semibold text-2xl pb-12">RegEx Playground</h1>
+    <div>
+      <h1 className="text-theme_slateBlue font-semibold text-2xl pb-12">RegEx Playground</h1>
       <Pattern />
-      <Match />
-      <FabButton>
+      {
+        matches.map((match, idx) => {
+          return (
+            <Match
+              key={idx}
+              value={match}
+              onChange={(value) => {
+                setMatches((prevMatches) => {
+                  return [
+                    ...prevMatches.slice(0, idx),
+                    value,
+                    ...prevMatches.slice(idx + 1),
+                  ]
+                })
+              }} />
+          )
+        })
+      }
+      {/* <Match /> */}
+      <FabButton onClick={onClick}>
         <p className="text-white font-bold">+</p>
       </FabButton>
 
