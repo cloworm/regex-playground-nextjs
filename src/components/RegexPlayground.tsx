@@ -29,7 +29,7 @@ const MatchBox: FunctionComponent<MatchBoxProps> = ({
 
     <h3>Match groups:</h3>
     {match ? match.slice(1).map((group, idx) => {
-      return <div>{idx + 1}: {group}</div>
+      return <div key={idx}>{idx + 1}: {group}</div>
     }) : 'No matches yet'}
   </div>
 }

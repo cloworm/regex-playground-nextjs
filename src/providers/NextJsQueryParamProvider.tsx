@@ -17,10 +17,10 @@ const NextJsQueryParamProvider: FunctionComponent = ({
       process.browser
         ? window.location
         : ({
-            search: router.asPath.replace(/[^?]+/u, ''),
-          } as Location),
+          search: router.asPath.replace(/[^?]+/u, ''),
+        } as Location),
     [router.asPath]
-  );
+  )
 
   const history = useMemo(
     () => ({
@@ -39,7 +39,7 @@ const NextJsQueryParamProvider: FunctionComponent = ({
       },
       location,
     }),
-    [pathname, router.pathname, router.query, location]
+    [pathname, router, location]
   )
 
   return (
