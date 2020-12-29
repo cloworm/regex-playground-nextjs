@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback } from 'react'
-import { useQueryParam, withDefault, ArrayParam, StringParam, useQueryParams } from 'use-query-params'
+import { withDefault, StringParam, useQueryParams } from 'use-query-params'
 
 import Card from './Card'
 import Input from './Input'

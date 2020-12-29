@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback, useMemo } from 'react'
-import { useQueryParam, withDefault, ArrayParam, StringParam } from 'use-query-params'
+import { useQueryParam, withDefault, StringParam } from 'use-query-params'
 
 import Card from './Card'
 import Textarea from './Textarea'
@@ -10,13 +10,13 @@ interface Props {
 }
 
 const Match: FunctionComponent<Props> = ({ value, onChange }) => {
-  const [pattern, setPattern] = useQueryParam('pattern', withDefault(StringParam, ''))
-  const [flags, setFlags] = useQueryParam('flags', withDefault(StringParam, ''))
+  const [pattern] = useQueryParam('pattern', withDefault(StringParam, ''))
+  const [flags] = useQueryParam('flags', withDefault(StringParam, ''))
   const handleChange = useCallback((event) => {
     onChange(event.target.value)
   }, [onChange])
 
-  const match = useMemo<RegExpMatchArray | void>(() => {
+  const match = useMemo<RegExpMatchArray | null>(() => {
     let re: RegExp
     try {
       re = new RegExp(pattern, flags)
