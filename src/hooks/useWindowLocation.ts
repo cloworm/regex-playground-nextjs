@@ -1,10 +1,9 @@
 import useIsMounted from './useIsMounted'
 import { useEffect, useState } from 'react'
 
-
 const useWindowLocation = (): Location|void => {
   const isMounted = useIsMounted()
-  const [location, setLocation] = useState<Location|void>(isMounted ? window.location : undefined)
+  const [location, setLocation] = useState<Location|void>()
 
   useEffect(() => {
     if (!isMounted) return
