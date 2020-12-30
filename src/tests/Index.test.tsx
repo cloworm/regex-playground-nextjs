@@ -16,7 +16,7 @@ describe('Index', () => {
     }))
     render(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
 
-    expect(screen.getByTestId('pattern-input')).toHaveValue('[a-z]')
-    expect(screen.getByTestId('flags-input')).toHaveValue('gi')
+    expect(screen.getByRole('textbox', { name: 'pattern' })).toHaveValue('[a-z]')
+    expect(screen.getByRole('textbox', { name: 'flags' })).toHaveValue('gi')
   })
 })
