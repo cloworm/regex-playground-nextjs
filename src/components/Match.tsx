@@ -1,4 +1,4 @@
-import { FunctionComponent, useCallback, useMemo } from 'react'
+import React, { FunctionComponent, useCallback, useMemo } from 'react'
 import { useQueryParam, withDefault, StringParam } from 'use-query-params'
 
 import Card from './Card'

@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import React, { FunctionComponent } from 'react'
 import { HighlightWithinTextarea } from 'react-highlight-within-textarea'
 
 interface Props {

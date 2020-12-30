@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState, useCallback } from 'react'
+import React, { FunctionComponent, useEffect, useState, useCallback } from 'react'
 import { useClipboard } from 'use-clipboard-copy'
 
 import useWindowLocation from '../hooks/useWindowLocation'
