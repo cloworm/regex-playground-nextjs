@@ -100,11 +100,15 @@ const Examples: FunctionComponent = () => {
       <table className="table-fixed w-full">
         <tbody>
           {
-            flagExamples.map((flag: Examples, idx) => {
+            flagExamples.map(({
+              example,
+              name,
+              tip,
+            }: Examples, idx) => {
               return (
-                <tr onClick={() => handleClick(flag.example)} className="hover:bg-theme_gray cursor-pointer" key={'flags-' + idx}>
-                  <td className="w-1/4">{ flag.name }</td>
-                  <td>{ flag.tip }</td>
+                <tr onClick={() => handleClick(example)} className="hover:bg-theme_gray cursor-pointer" key={idx}>
+                  <td className="w-1/4">{name}</td>
+                  <td>{tip}</td>
                 </tr>
               )
             })
@@ -117,11 +121,15 @@ const Examples: FunctionComponent = () => {
       <table className="table-fixed w-full">
         <tbody>
           {
-            selectors.map((selector: Examples, idx) => {
+            selectors.map(({
+              example,
+              name,
+              tip
+            }: Examples, idx) => {
               return (
-                <tr onClick={() => handleClick(selector.example)} className="hover:bg-theme_gray cursor-pointer" key={'selectors-' + idx}>
-                  <td className="w-1/4">{ selector.name }</td>
-                  <td>{ selector.tip }</td>
+                <tr onClick={() => handleClick(example)} className="hover:bg-theme_gray cursor-pointer" key={idx}>
+                  <td className="w-1/4">{name}</td>
+                  <td>{tip}</td>
                 </tr>
               )
             })
@@ -134,11 +142,15 @@ const Examples: FunctionComponent = () => {
       <table className="table-fixed w-full">
         <tbody>
           {
-            positions.map((position: Examples, idx) => {
+            positions.map(({
+              example,
+              name,
+              tip,
+            }: Examples, idx) => {
               return (
-                <tr onClick={() => handleClick(position.example)} className="hover:bg-theme_gray cursor-pointer" key={'positions-' + idx}>
-                  <td className="w-1/4">{ position.name }</td>
-                  <td>{ position.tip }</td>
+                <tr onClick={() => handleClick(example)} className="hover:bg-theme_gray cursor-pointer" key={idx}>
+                  <td className="w-1/4">{name}</td>
+                  <td>{tip}</td>
                 </tr>
               )
             })
@@ -151,11 +163,15 @@ const Examples: FunctionComponent = () => {
       <table className="table-fixed w-full">
         <tbody>
           {
-            escapes.map((escape: Examples, idx) => {
+            escapes.map(({
+              example,
+              name,
+              tip,
+            }: Examples, idx) => {
               return (
-                <tr onClick={() => handleClick(escape.example)} className="hover:bg-theme_gray cursor-pointer" key={'escapes-' + idx}>
-                  <td className="w-1/4">{ escape.name }</td>
-                  <td>{ escape.tip }</td>
+                <tr onClick={() => handleClick(example)} className="hover:bg-theme_gray cursor-pointer" key={idx}>
+                  <td className="w-1/4">{name}</td>
+                  <td>{tip}</td>
                 </tr>
               )
             })
@@ -168,11 +184,15 @@ const Examples: FunctionComponent = () => {
       <table className="table-fixed w-full">
         <tbody>
           {
-            specials.map((special: Examples, idx) => {
+            specials.map(({
+              example,
+              name,
+              tip,
+            }: Examples, idx) => {
               return (
-                <tr onClick={() => handleClick(special.example)} className="hover:bg-theme_gray cursor-pointer" key={'specials-' + idx}>
-                  <td className="w-1/4">{ special.name }</td>
-                  <td>{ special.tip }</td>
+                <tr onClick={() => handleClick(example)} className="hover:bg-theme_gray cursor-pointer" key={idx}>
+                  <td className="w-1/4">{name}</td>
+                  <td>{tip}</td>
                 </tr>
               )
             })
@@ -184,11 +204,15 @@ const Examples: FunctionComponent = () => {
       <table className="table-fixed w-full">
         <tbody>
           {
-            groups.map((group: Examples, idx) => {
+            groups.map(({
+              example,
+              name,
+              tip,
+            }: Examples, idx) => {
               return (
-                <tr onClick={() => handleClick(group.example)} className="hover:bg-theme_gray cursor-pointer" key={'groups-' + idx}>
-                  <td className="w-1/4">{ group.name }</td>
-                  <td>{ group.tip }</td>
+                <tr onClick={() => handleClick(example)} className="hover:bg-theme_gray cursor-pointer" key={idx}>
+                  <td className="w-1/4">{name}</td>
+                  <td>{tip}</td>
                 </tr>
               )
             })
@@ -200,11 +224,15 @@ const Examples: FunctionComponent = () => {
       <table className="table-fixed w-full">
         <tbody>
           {
-            counts.map((count: Examples, idx) => {
+            counts.map(({
+              example,
+              name,
+              tip,
+            }: Examples, idx) => {
               return (
-                <tr onClick={() => handleClick(count.example)} className="hover:bg-theme_gray cursor-pointer" key={'counts-' + idx}>
-                  <td className="w-1/4">{ count.name }</td>
-                  <td>{ count.tip }</td>
+                <tr onClick={() => handleClick(example)} className="hover:bg-theme_gray cursor-pointer" key={idx}>
+                  <td className="w-1/4">{name}</td>
+                  <td>{tip}</td>
                 </tr>
               )
             })

@@ -16,20 +16,23 @@ const Match: FunctionComponent<Props> = ({ value, onChange }) => {
     onChange(event.target.value)
   }, [onChange])
 
-  const match = useMemo<RegExpMatchArray | null>(() => {
+  const regEx = useMemo<RegExp|null>(() => {
+    if (!pattern) return null
+
     let re: RegExp
     try {
       re = new RegExp(pattern, flags)
-      return value.match(re)
     } catch(err) {
       re = new RegExp('')
-      return value.match(re)
     }
-  }, [flags, pattern, value])
+    return re
+  }, [flags, pattern])
 
-  const regEx = useMemo(() => {
-    return pattern && flags ? new RegExp(pattern, flags) : null
-  }, [pattern, flags])
+  const match = useMemo<RegExpMatchArray|null>(() => {
+    if (!regEx) return null
+
+    return value.match(regEx)
+  }, [value, regEx])
 
   return (
     <div className="mb-6 shadow">

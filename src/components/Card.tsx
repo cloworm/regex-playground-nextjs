@@ -1,7 +1,6 @@
-import React, { FunctionComponent, ReactNode } from 'react'
+import React, { FunctionComponent } from 'react'
 
 interface Props {
-  children: ReactNode,
   color?: string
 }
 
