@@ -48,7 +48,7 @@ const Pattern: FunctionComponent = () => {
       <div>
         {errorMessage ? errorMessage : null}
       </div>
-      <a onClick={handleClickClear} className="text-sm uppercase text-theme_textGray font-bold hover:text-theme_hotPink cursor-pointer">
+      <a onClick={handleClickClear} className="inline-block text-sm uppercase text-theme_slateBlue font-bold hover:text-theme_hotPink cursor-pointer mt-1 px-2 py-1 border-3 border-theme_slateBlue rounded hover:border-theme_hotPink">
         CLEAR
       </a>
     </Card>

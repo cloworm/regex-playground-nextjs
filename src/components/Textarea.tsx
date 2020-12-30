@@ -4,8 +4,8 @@ import { HighlightWithinTextarea } from 'react-highlight-within-textarea'
 interface Props {
   label: string
   value: string
-  onChange: (e: any) => void
-  pattern: RegExp
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
+  pattern: RegExp|null
 }
 
 const Textarea: FunctionComponent<Props> = ({ label, value, onChange, pattern }) => {

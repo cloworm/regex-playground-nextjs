@@ -98,104 +98,118 @@ const Examples: FunctionComponent = () => {
       <hr className="border-theme_slateBlue border-t-3" />
 
       <table className="table-fixed w-full">
-        {
-          flagExamples.map((flag: Examples, idx) => {
-            return (
-              <tr onClick={() => handleClick(flag.example)} className="hover:bg-theme_gray cursor-pointer" key={'flags-' + idx}>
-                <td className="w-1/4">{ flag.name }</td>
-                <td>{ flag.tip }</td>
-              </tr>
-            )
-          })
-        }
+        <tbody>
+          {
+            flagExamples.map((flag: Examples, idx) => {
+              return (
+                <tr onClick={() => handleClick(flag.example)} className="hover:bg-theme_gray cursor-pointer" key={'flags-' + idx}>
+                  <td className="w-1/4">{ flag.name }</td>
+                  <td>{ flag.tip }</td>
+                </tr>
+              )
+            })
+          }
+        </tbody>
       </table>
 
       <hr className="border-theme_slateBlue border-t-3" />
 
       <table className="table-fixed w-full">
-        {
-          selectors.map((selector: Examples, idx) => {
-            return (
-              <tr onClick={() => handleClick(selector.example)} className="hover:bg-theme_gray cursor-pointer" key={'selectors-' + idx}>
-                <td className="w-1/4">{ selector.name }</td>
-                <td>{ selector.tip }</td>
-              </tr>
-            )
-          })
-        }
+        <tbody>
+          {
+            selectors.map((selector: Examples, idx) => {
+              return (
+                <tr onClick={() => handleClick(selector.example)} className="hover:bg-theme_gray cursor-pointer" key={'selectors-' + idx}>
+                  <td className="w-1/4">{ selector.name }</td>
+                  <td>{ selector.tip }</td>
+                </tr>
+              )
+            })
+          }
+        </tbody>
       </table>
 
       <hr className="border-theme_slateBlue border-t-3" />
 
       <table className="table-fixed w-full">
-        {
-          positions.map((position: Examples, idx) => {
-            return (
-              <tr onClick={() => handleClick(position.example)} className="hover:bg-theme_gray cursor-pointer" key={'positions-' + idx}>
-                <td className="w-1/4">{ position.name }</td>
-                <td>{ position.tip }</td>
-              </tr>
-            )
-          })
-        }
+        <tbody>
+          {
+            positions.map((position: Examples, idx) => {
+              return (
+                <tr onClick={() => handleClick(position.example)} className="hover:bg-theme_gray cursor-pointer" key={'positions-' + idx}>
+                  <td className="w-1/4">{ position.name }</td>
+                  <td>{ position.tip }</td>
+                </tr>
+              )
+            })
+          }
+        </tbody>
       </table>
 
       <hr className="border-theme_slateBlue border-t-3" />
 
       <table className="table-fixed w-full">
-        {
-          escapes.map((escape: Examples, idx) => {
-            return (
-              <tr onClick={() => handleClick(escape.example)} className="hover:bg-theme_gray cursor-pointer" key={'escapes-' + idx}>
-                <td className="w-1/4">{ escape.name }</td>
-                <td>{ escape.tip }</td>
-              </tr>
-            )
-          })
-        }
+        <tbody>
+          {
+            escapes.map((escape: Examples, idx) => {
+              return (
+                <tr onClick={() => handleClick(escape.example)} className="hover:bg-theme_gray cursor-pointer" key={'escapes-' + idx}>
+                  <td className="w-1/4">{ escape.name }</td>
+                  <td>{ escape.tip }</td>
+                </tr>
+              )
+            })
+          }
+        </tbody>
       </table>
 
       <hr className="border-theme_slateBlue border-t-3" />
 
       <table className="table-fixed w-full">
-        {
-          specials.map((special: Examples, idx) => {
-            return (
-              <tr onClick={() => handleClick(special.example)} className="hover:bg-theme_gray cursor-pointer" key={'specials-' + idx}>
-                <td className="w-1/4">{ special.name }</td>
-                <td>{ special.tip }</td>
-              </tr>
-            )
-          })
-        }
+        <tbody>
+          {
+            specials.map((special: Examples, idx) => {
+              return (
+                <tr onClick={() => handleClick(special.example)} className="hover:bg-theme_gray cursor-pointer" key={'specials-' + idx}>
+                  <td className="w-1/4">{ special.name }</td>
+                  <td>{ special.tip }</td>
+                </tr>
+              )
+            })
+          }
+        </tbody>
       </table>
 
       <hr className="border-theme_slateBlue border-t-3" />
       <table className="table-fixed w-full">
-        {
-          groups.map((group: Examples, idx) => {
-            return (
-              <tr onClick={() => handleClick(group.example)} className="hover:bg-theme_gray cursor-pointer" key={'groups-' + idx}>
-                <td className="w-1/4">{ group.name }</td>
-                <td>{ group.tip }</td>
-              </tr>
-            )
-          })
-        }
+        <tbody>
+          {
+            groups.map((group: Examples, idx) => {
+              return (
+                <tr onClick={() => handleClick(group.example)} className="hover:bg-theme_gray cursor-pointer" key={'groups-' + idx}>
+                  <td className="w-1/4">{ group.name }</td>
+                  <td>{ group.tip }</td>
+                </tr>
+              )
+            })
+          }
+        </tbody>
       </table>
 
       <hr className="border-theme_slateBlue border-t-3" />
       <table className="table-fixed w-full">
-        {
-          counts.map((count: Examples, idx) => {
-            return (
-              <tr onClick={() => handleClick(count.example)} className="hover:bg-theme_gray cursor-pointer" key={'counts-' + idx}>
-                <td className="w-1/4">{ count.name }</td>
-                <td>{ count.tip }</td>
-              </tr>
-            )
-          })
-        }
+        <tbody>
+          {
+            counts.map((count: Examples, idx) => {
+              return (
+                <tr onClick={() => handleClick(count.example)} className="hover:bg-theme_gray cursor-pointer" key={'counts-' + idx}>
+                  <td className="w-1/4">{ count.name }</td>
+                  <td>{ count.tip }</td>
+                </tr>
+              )
+            })
+          }
+        </tbody>
       </table>
 
     </Card>

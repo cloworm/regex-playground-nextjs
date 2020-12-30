@@ -6,7 +6,7 @@ import Textarea from './Textarea'
 
 interface Props {
   value: string
-  onChange: (e: any) => void
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
 }
 
 const Match: FunctionComponent<Props> = ({ value, onChange }) => {
@@ -27,11 +27,15 @@ const Match: FunctionComponent<Props> = ({ value, onChange }) => {
     }
   }, [flags, pattern, value])
 
+  const regEx = useMemo(() => {
+    return pattern && flags ? new RegExp(pattern, flags) : null
+  }, [pattern, flags])
+
   return (
     <div className="mb-6 shadow">
       <Card color="pink">
 
-        <Textarea label="text" value={value} onChange={handleChange} pattern={new RegExp(pattern, flags)} />
+        <Textarea label="text" value={value} onChange={handleChange} pattern={regEx} />
 
         <p className="text-right text-theme_textGray text-sm uppercase font-semibold">{match && match?.length > 0 ? 'Match Found!' : 'No Matches Found'}</p>
 

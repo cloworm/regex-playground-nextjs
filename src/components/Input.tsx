@@ -3,7 +3,7 @@ import { FunctionComponent } from 'react'
 interface Props {
   label: string
   value: string
-  onChange: (e: any) => void
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const Input: FunctionComponent<Props> = ({ label, value, onChange }) => {
