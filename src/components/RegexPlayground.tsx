@@ -26,7 +26,9 @@ const RegexPlayground: FunctionComponent = () => {
     <div>
       <h1 className="text-theme_slateBlue font-semibold text-2xl pb-12">RegEx Playground</h1>
 
-      <Pattern />
+      <div className="mb-4">
+        <Pattern />
+      </div>
 
       {
         (matches as string[]).map((match: string, idx: number) => {
@@ -48,9 +50,13 @@ const RegexPlayground: FunctionComponent = () => {
         })
       }
 
-      <FabButton onClick={onClick}>
-        <p className="text-white font-bold">+</p>
-      </FabButton>
+      <div className="text-center text-white">
+        <FabButton onClick={onClick}>
+          <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+        </FabButton>
+      </div>
 
     </div>
   )

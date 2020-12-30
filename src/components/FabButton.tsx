@@ -6,7 +6,7 @@ interface Props {
 
 const FabButton: FunctionComponent<Props> = ({ children, onClick }) => {
   return (
-    <button className="px-5 py-3 rounded-full bg-gradient-to-br from-theme_slateBlue to-theme_hotPink shadow" onClick={onClick}>
+    <button className="w-10 h-10 p-2 rounded-full bg-gradient-to-br to-theme_slateBlue from-theme_hotPink shadow" onClick={onClick}>
       {children}
     </button>
   )

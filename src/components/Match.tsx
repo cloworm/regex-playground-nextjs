@@ -28,18 +28,26 @@ const Match: FunctionComponent<Props> = ({ value, onChange }) => {
   }, [flags, pattern, value])
 
   return (
-    <Card>
-      <Textarea value={value} label="text" onChange={handleChange} />
-      <p className="text-right text-theme_textGray text-sm uppercase font-semibold">matches found</p>
+    <div className="mb-4">
+      <Card color="pink">
+        <Textarea value={value} label="text" onChange={handleChange} />
+        <p className="text-right text-theme_textGray text-sm uppercase font-semibold">{match?.length > 0 ? 'Match Found!' : 'No Matches Found'}</p>
 
-      <h3>Match result:</h3>
-      {match ? match[0] : 'No matches yet' }
-
-      <h3>Match groups:</h3>
-      {match ? match.slice(1).map((group, idx) => {
-        return <div key={idx}>{idx + 1}: {group}</div>
-      }) : 'No matches yet'}
-    </Card>
+      </Card>
+      <div className="bg-theme_pinkLace bg-opacity-30 p-2">
+        <div className="inline-block h-6 w-6 rounded-full bg-theme_persianPink text-center">
+          <span className="text-sm">{match?.length ? match.length : 0}</span>
+        </div>
+        <span className="font-bold text-sm pl-2">MATCH GROUP{match?.length === 1 ? '' : 'S'}</span>
+        <ul className="list-inside list-decimal px-4">
+          {
+            match?.map((group, idx) => {
+              return <li key={idx}>{group}</li>
+            })
+          }
+        </ul>
+      </div>
+    </div>
   )
 }
 

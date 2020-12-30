@@ -17,7 +17,7 @@ const Home: FunctionComponent = () => {
             <RegexPlayground />
           </div>
         </main>
-        <footer className="bg-gradient-to-br from-theme_slateBlue to-theme_hotPink py-8 mt-auto">
+        <footer className="bg-gradient-to-br to-theme_slateBlue from-theme_hotPink py-4 mt-auto">
           <div className="text-center text-white">
             <a href='http://www.github.com/cloworm' target='_blank' rel='noopener noreferrer'>
               {/* <img src='/github.png' /> */}
