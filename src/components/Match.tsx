@@ -31,7 +31,7 @@ const Match: FunctionComponent<Props> = ({ value, onChange }) => {
     <div className="mb-4">
       <Card color="pink">
         <Textarea value={value} label="text" onChange={handleChange} />
-        <p className="text-right text-theme_textGray text-sm uppercase font-semibold">{match?.length > 0 ? 'Match Found!' : 'No Matches Found'}</p>
+        <p className="text-right text-theme_textGray text-sm uppercase font-semibold">{match && match?.length > 0 ? 'Match Found!' : 'No Matches Found'}</p>
 
       </Card>
       <div className="bg-theme_pinkLace bg-opacity-30 p-2">
