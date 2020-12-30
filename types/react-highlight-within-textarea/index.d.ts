@@ -1,1 +1,1 @@
-declare module 'react-hightlight-within-textarea'
+declare module 'react-highlight-within-textarea'
