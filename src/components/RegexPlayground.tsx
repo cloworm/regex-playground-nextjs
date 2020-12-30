@@ -1,180 +1,65 @@
+import React, { FunctionComponent, useCallback } from 'react'
+
 import useIsMounted from '../hooks/useIsMounted'
-
-import React, { FunctionComponent, useCallback, useMemo } from 'react'
-import { useQueryParam, withDefault, ArrayParam, StringParam } from 'use-query-params'
-
-interface MatchBoxProps {
-  onChange: (value: string) => void
-  pattern: RegExp,
-  value: string,
-}
-
-const MatchBox: FunctionComponent<MatchBoxProps> = ({
-  onChange,
-  pattern,
-  value,
-}) => {
-  const handleChange = useCallback((event) => {
-    onChange(event.target.value)
-  }, [onChange])
-
-  const match = useMemo<RegExpMatchArray | null>(() => {
-    return value.match(pattern)
-  }, [value, pattern])
-
-  return <div style={{ border: '1px solid #E0E0E0', padding: '20px' }}>
-    <input value={value} onChange={handleChange} />
-    <h3>Match result:</h3>
-    {match ? match[0] : 'No matches yet' }
-
-    <h3>Match groups:</h3>
-    {match ? match.slice(1).map((group, idx) => {
-      return <div key={idx}>{idx + 1}: {group}</div>
-    }) : 'No matches yet'}
-  </div>
-}
+import Pattern from './Pattern'
+import Match from './Match'
+import FabButton from './FabButton'
+import useQueryParams from '../hooks/useQueryParams'
 
 const RegexPlayground: FunctionComponent = () => {
   const isMounted = useIsMounted()
-  const [pattern, setPattern] = useQueryParam('pattern', withDefault(StringParam, ''))
-  const [flags, setFlags] = useQueryParam('flags', withDefault(StringParam, ''))
-  const [matches, setMatches] = useQueryParam('matches[]', withDefault(ArrayParam, ['']))
+  const [{ matches }, setQuery] = useQueryParams()
 
-  const handlePatternChange = useCallback((event) => {
-    setPattern(event.target.value)
-  }, [setPattern])
-  const handleFlagsChange = useCallback((event) => {
-    setFlags(event.target.value)
-  }, [setFlags])
-  const handleClickClear = useCallback(() => {
-    setFlags('')
-    setPattern('')
-  }, [setFlags, setPattern])
-
-  let re: RegExp
-  // let errorMessage: string|void
-  try {
-    re = new RegExp(pattern, flags)
-  } catch(err) {
-    re = new RegExp('')
-    // errorMessage = err.message
-  }
+  const handleClick = useCallback(() => {
+    setQuery((prevQuery) => {
+      if (!prevQuery?.matches) return { matches: [] }
+      return {
+        matches: [
+          ...prevQuery.matches,
+          '',
+        ]
+      }
+    })
+  }, [setQuery])
 
   if (!isMounted) return <div />
 
   return (
     <div>
-      <div className='container-fluid'>
-        <div className='row'>
-          <div className='col-xs-12 col-md-8'>
-            <div className='container-fluid'>
-              <div className='row bottom-xs'>
-                <div className='col-xs-8 col-sm-6'>
-                  <span>
-                    <span>/</span>
-                    <input
-                      autoCapitalize='off'
-                      autoCorrect='off'
-                      value={pattern}
-                      onChange={handlePatternChange}
-                      data-testid='pattern-input'
-                    />
-                    <span>/</span>
-                  </span>
-                </div>
-                <div className='col-xs-4 col-sm-4'>
-                  <span>
-                    <input
-                      autoCapitalize='off'
-                      autoCorrect='off'
-                      value={flags}
-                      onChange={handleFlagsChange}
-                      data-testid='flags-input'
-                    />
-                  </span>
-                </div>
-                <div className='col-sm-2 col-xs-12'>
-                  <button
-                    onClick={handleClickClear}
-                  >
-                    Clear
-                  </button>
-                </div>
-              </div>
-            </div>
-            <br />
-            {
-              (matches as string[]).map((value, i) => {
-                return (
-                  <div key={i}>
-                    <MatchBox
-                      pattern={re}
-                      value={value}
-                      onChange={(value) => {
-                        setMatches((prevMatches) => {
-                          if (prevMatches)
-                            return [
-                              ...prevMatches.slice(0, i),
-                              value,
-                              ...prevMatches.slice(i + 1),
-                            ]
-                          else {
-                            return [value]
-                          }
-                        })
-                      }}
-                    />
-                  </div>
-                )
-              })
-            }
-            <button role='button'
-              onClick={() => {
-                setMatches((prevMatches) => {
-                  if (prevMatches)
-                    return [
-                      ...prevMatches,
-                      '',
+      <div className="mb-4 shadow">
+        <Pattern />
+      </div>
+
+      {
+        (matches as string[]).map((match: string, idx: number) => {
+          return (
+            <Match
+              key={idx}
+              value={match}
+              onChange={(value) => {
+                setQuery((prevQuery) => {
+                  if (!prevQuery?.matches) return { matches: [] }
+                  return {
+                    matches: [
+                      ...prevQuery.matches.slice(0, idx),
+                      value,
+                      ...prevQuery.matches.slice(idx + 1),
                     ]
-                  else {
-                    return ['']
                   }
                 })
-              }}
-            >
-              +
-            </button>
-            {
-              matches.length > 1 && <button role='button'
-                onClick={() => {
-                  setMatches((prevMatches) => {
-                    if (prevMatches)
-                      return [
-                        ...prevMatches.slice(0, prevMatches.length - 1),
-                      ]
-                    else {
-                      return []
-                    }
-                  })
-                }}
-              >
-                -
-              </button>
-            }
-          </div>
-        </div>
+              }} />
+          )
+        })
+      }
+
+      <div className="text-center text-white">
+        <FabButton onClick={handleClick}>
+          <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+        </FabButton>
       </div>
-      <footer>
-        <div className='container-fluid'>
-          <a href='http://www.github.com/cloworm' target='_blank' rel='noopener noreferrer'>
-            <img src='/github.png' />
-            { ' ' }
-            cloworm
-          </a>
-          { ' ' }
-          © 2020
-        </div>
-      </footer>
+
     </div>
   )
 }

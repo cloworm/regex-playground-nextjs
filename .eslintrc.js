@@ -45,7 +45,7 @@ module.exports = {
     'react/prop-types': [0],
     'react-hooks/exhaustive-deps': 2,
 
-    '@typescript-eslint/no-unused-vars': 2
+    '@typescript-eslint/no-unused-vars': [2, { varsIgnorePattern: '_.*' }]
   },
   'settings': {
     'react': {
