@@ -76,7 +76,7 @@ const counts: Examples[] = [
 ]
 
 const Examples: FunctionComponent = () => {
-  const [{ pattern, flags }, setQuery] = useQueryParams({
+  const [_query, setQuery] = useQueryParams({
     pattern: withDefault(StringParam, ''),
     flags: withDefault(StringParam, ''),
     'matches[]': withDefault(ArrayParam, [''])
