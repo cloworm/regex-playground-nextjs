@@ -6,7 +6,7 @@ import Textarea from './Textarea'
 
 interface Props {
   value: string
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
+  onChange: (value: string) => void
 }
 
 const Match: FunctionComponent<Props> = ({ value, onChange }) => {
