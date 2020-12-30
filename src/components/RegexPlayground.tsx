@@ -26,7 +26,7 @@ const RegexPlayground: FunctionComponent = () => {
     <div>
       <h1 className="text-theme_slateBlue font-semibold text-2xl pb-12">RegEx Playground</h1>
 
-      <div className="mb-4">
+      <div className="mb-4 shadow">
         <Pattern />
       </div>
 

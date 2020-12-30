@@ -10,7 +10,7 @@ const Input: FunctionComponent<Props> = ({ label, value, onChange }) => {
   return (
     <div>
       <div className="pb-0.5">
-        <label className="uppercase font-semibold text-sm" htmlFor={label}>{label}</label>
+        <label className="uppercase font-semibold text-sm tracking-wide" htmlFor={label}>{label}</label>
       </div>
       <div>
         <input
@@ -19,8 +19,9 @@ const Input: FunctionComponent<Props> = ({ label, value, onChange }) => {
           type="text"
           className="border-3 border-black rounded-md w-full focus:border-none focus:border-theme_hotPink focus:ring focus:ring-theme_hotPink focus:ring-opacity-50"
           placeholder="Placeholder"
-          autoCapitalize='off'
-          autoCorrect='off'
+          autoCapitalize="off"
+          autoCorrect="off"
+          autoComplete="off"
           value={value}
           onChange={onChange}
         />

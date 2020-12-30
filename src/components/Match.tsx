@@ -28,9 +28,11 @@ const Match: FunctionComponent<Props> = ({ value, onChange }) => {
   }, [flags, pattern, value])
 
   return (
-    <div className="mb-4">
+    <div className="mb-6 shadow">
       <Card color="pink">
-        <Textarea value={value} label="text" onChange={handleChange} />
+
+        <Textarea label="text" value={value} onChange={handleChange} pattern={new RegExp(pattern, flags)} />
+
         <p className="text-right text-theme_textGray text-sm uppercase font-semibold">{match && match?.length > 0 ? 'Match Found!' : 'No Matches Found'}</p>
 
       </Card>
