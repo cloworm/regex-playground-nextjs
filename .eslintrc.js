@@ -39,9 +39,13 @@ module.exports = {
       'error',
       'never'
     ],
+
     // suppress errors for missing 'import React' in files
     'react/react-in-jsx-scope': 'off',
-    'react/prop-types': [0]
+    'react/prop-types': [0],
+    'react-hooks/exhaustive-deps': 2,
+
+    '@typescript-eslint/no-unused-vars': 2
   },
   'settings': {
     'react': {

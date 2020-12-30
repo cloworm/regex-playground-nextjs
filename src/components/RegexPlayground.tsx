@@ -42,22 +42,22 @@ const RegexPlayground: FunctionComponent = () => {
 
   const handlePatternChange = useCallback((event) => {
     setPattern(event.target.value)
-  }, [])
+  }, [setPattern])
   const handleFlagsChange = useCallback((event) => {
     setFlags(event.target.value)
-  }, [])
+  }, [setFlags])
   const handleClickClear = useCallback(() => {
     setFlags('')
     setPattern('')
-  }, [])
+  }, [setFlags, setPattern])
 
   let re: RegExp
-  let errorMessage: string|void
+  // let errorMessage: string|void
   try {
     re = new RegExp(pattern, flags)
   } catch(err) {
     re = new RegExp('')
-    errorMessage = err.message
+    // errorMessage = err.message
   }
 
   if (!isMounted) return <div />
