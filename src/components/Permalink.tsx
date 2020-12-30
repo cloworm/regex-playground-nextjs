@@ -1,43 +1,38 @@
-import { FunctionComponent, useMemo } from 'react'
-import { withDefault, StringParam, ArrayParam, useQueryParams } from 'use-query-params'
+import { FunctionComponent, useEffect, useState, useCallback } from 'react'
+import { useClipboard } from 'use-clipboard-copy'
 
-import useIsMounted from '../hooks/useIsMounted'
+import useWindowLocation from '../hooks/useWindowLocation'
 
 const Permalink: FunctionComponent = () => {
-  const isMounted = useIsMounted()
-  const [{ pattern, flags, matches }] = useQueryParams({
-    pattern: withDefault(StringParam, ''),
-    flags: withDefault(StringParam, ''),
-    matches: withDefault(ArrayParam, [''])
-  })
+  const location = useWindowLocation()
+  const [copied, setCopied] = useState(false)
+  const clipboard = useClipboard()
 
-  const url = useMemo(() => {
-    if (!isMounted) return ''
+  const handleClick = useCallback(() => {
+    if (!location) return
+    clipboard.copy(location.href)
+    setCopied(true)
+  }, [clipboard, location])
 
-    let url = `${window.location.protocol}//${window.location.host}`
-    const params = []
-    if (pattern.length > 0) {
-      if (params.length < 1) url += '?'
-      params.push(`pattern=${encodeURIComponent(pattern)}`)
-    }
-    if (flags.length > 0) {
-      if (params.length < 1) url += '?'
-      params.push(`flags=${encodeURIComponent(flags)}`)
-    }
-    if (matches.length > 0 && matches[0] !== '') {
-      if (params.length < 1) url += '?'
-      matches.forEach(function(match) {
-        if (!match) return
-        params.push(`matches[]=${encodeURIComponent(match)}`)
-      })
-    }
+  useEffect(() => {
+    if (!copied) return
 
-    return url + params.join('&')
-  }, [pattern, flags, matches, isMounted])
+    const timeout = setTimeout(() => {
+      setCopied(false)
+    }, 5000)
+
+    return () => clearTimeout(timeout)
+  }, [copied])
+
+  if (!location) return <div />
 
   return (
-    <div>
-      {url}
+    <div className="text-sm border-3 border-theme_slateBlue rounded px-3 py-1 flex items-center">
+      <span className="pr-2 text-theme_slateBlue font-bold text-sm">
+        PERMALINK
+      </span>
+      <input value={location.href} name="permalink" className="w-full bg-theme_gray" readOnly />
+      <button className="border-3 border-theme_slateBlue text-theme_slateBlue font-bold text-sm ml-1 px-2 py-1 hover:text-theme_hotPink hover:border-theme_hotPink rounded" onClick={handleClick}>{ copied ? 'COPIED' : 'COPY' }</button>
     </div>
   )
 }
