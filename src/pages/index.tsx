@@ -1,6 +1,7 @@
 import { FunctionComponent } from 'react'
 import Head from 'next/head'
 import RegexPlayground from '../components/RegexPlayground'
+import Examples from '../components/Examples'
 
 const Home: FunctionComponent = () => {
   return (
@@ -11,13 +12,21 @@ const Home: FunctionComponent = () => {
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet" />
       </Head>
-      <div className="min-h-screen flex flex-col bg-theme_gray">
-        <main className="flex justify-center">
-          <div className="py-4 px-8 sm:w-2/3 xl:w-1/2">
-            <RegexPlayground />
+      <div className="min-h-screen flex flex-col justify-center bg-theme_gray">
+        <main className="flex flex-col align-center xl:w-2/3 py-4 max-w-full px-8">
+          <div>
+            <h1 className="text-theme_slateBlue font-semibold text-2xl pb-12">RegEx Playground</h1>
+          </div>
+          <div className="flex flex-row space-x-4">
+            <div className="flex-grow w-3/5">
+              <RegexPlayground />
+            </div>
+            <div className="w-2/5">
+              <Examples />
+            </div>
           </div>
         </main>
-        <footer className="bg-gradient-to-br to-theme_slateBlue from-theme_hotPink py-4 mt-auto">
+        <footer className="bg-gradient-to-br to-theme_slateBlue from-theme_hotPink py-4 mt-auto w-full">
           <div className="text-center text-white">
             <a href='http://www.github.com/cloworm' target='_blank' rel='noopener noreferrer'>
               {/* <img src='/github.png' /> */}
