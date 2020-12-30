@@ -1,14 +1,11 @@
 import React, { FunctionComponent, useCallback } from 'react'
-import { withDefault, StringParam, useQueryParams } from 'use-query-params'
 
+import useQueryParams from '../hooks/useQueryParams'
 import Card from './Card'
 import Input from './Input'
 
 const Pattern: FunctionComponent = () => {
-  const [{ pattern, flags }, setQuery] = useQueryParams({
-    pattern: withDefault(StringParam, ''),
-    flags: withDefault(StringParam, ''),
-  })
+  const [{ pattern, flags }, setQuery] = useQueryParams()
 
   const handlePatternChange = useCallback((event) => {
     setQuery({

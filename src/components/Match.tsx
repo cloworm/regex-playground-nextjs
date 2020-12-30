@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react'
-import { useQueryParam, withDefault, StringParam } from 'use-query-params'
 
+import useQueryParams from '../hooks/useQueryParams'
 import Card from './Card'
 import Textarea from './Textarea'
 
@@ -10,8 +10,7 @@ interface Props {
 }
 
 const Match: FunctionComponent<Props> = ({ value, onChange }) => {
-  const [pattern] = useQueryParam('pattern', withDefault(StringParam, ''))
-  const [flags] = useQueryParam('flags', withDefault(StringParam, ''))
+  const [{ pattern, flags }] = useQueryParams()
   const handleChange = useCallback((event) => {
     onChange(event.target.value)
   }, [onChange])

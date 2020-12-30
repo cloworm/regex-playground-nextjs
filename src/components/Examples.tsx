@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useCallback } from 'react'
-import { withDefault, StringParam, ArrayParam, useQueryParams } from 'use-query-params'
 
+import useQueryParams from '../hooks/useQueryParams'
 import Card from './Card'
 
 interface Example {
@@ -76,17 +76,13 @@ const counts: Examples[] = [
 ]
 
 const Examples: FunctionComponent = () => {
-  const [_query, setQuery] = useQueryParams({
-    pattern: withDefault(StringParam, ''),
-    flags: withDefault(StringParam, ''),
-    'matches[]': withDefault(ArrayParam, [''])
-  })
+  const [_query, setQuery] = useQueryParams()
 
   const handleClick = useCallback((example: Example) => {
     setQuery({
       pattern: example.pattern,
       flags: example.flags,
-      'matches[]': example.matchBoxValues
+      matches: example.matchBoxValues
     })
   }, [setQuery])
 

@@ -1,24 +1,26 @@
-import useIsMounted from '../hooks/useIsMounted'
-
 import React, { FunctionComponent, useCallback } from 'react'
-import { useQueryParam, withDefault, ArrayParam } from 'use-query-params'
+
+import useIsMounted from '../hooks/useIsMounted'
 import Pattern from './Pattern'
 import Match from './Match'
 import FabButton from './FabButton'
+import useQueryParams from '../hooks/useQueryParams'
 
 const RegexPlayground: FunctionComponent = () => {
   const isMounted = useIsMounted()
-  const [matches, setMatches] = useQueryParam('matches[]', withDefault(ArrayParam, ['']))
+  const [{ matches }, setQuery] = useQueryParams()
 
   const handleClick = useCallback(() => {
-    setMatches((prevMatches) => {
-      if (!prevMatches) return []
-      return [
-        ...prevMatches,
-        '',
-      ]
+    setQuery((prevQuery) => {
+      if (!prevQuery?.matches) return { matches: [] }
+      return {
+        matches: [
+          ...prevQuery.matches,
+          '',
+        ]
+      }
     })
-  }, [setMatches])
+  }, [setQuery])
 
   if (!isMounted) return <div />
 
@@ -35,13 +37,15 @@ const RegexPlayground: FunctionComponent = () => {
               key={idx}
               value={match}
               onChange={(value) => {
-                setMatches((prevMatches) => {
-                  if (!prevMatches) return []
-                  return [
-                    ...prevMatches.slice(0, idx),
-                    value,
-                    ...prevMatches.slice(idx + 1),
-                  ]
+                setQuery((prevQuery) => {
+                  if (!prevQuery?.matches) return { matches: [] }
+                  return {
+                    matches: [
+                      ...prevQuery.matches.slice(0, idx),
+                      value,
+                      ...prevQuery.matches.slice(idx + 1),
+                    ]
+                  }
                 })
               }} />
           )
