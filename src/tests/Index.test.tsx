@@ -12,13 +12,11 @@ import Index from '../pages/index'
 describe('Index', () => {
   test('renders the regex pattern from query params', async () => {
     mockedUseRouter.mockImplementation(() => ({
-      asPath: '',
-      query: {
-        pattern: '[a-z]'
-      },
+      asPath: '/?pattern=[a-z]&flags=gi',
     }))
     render(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
 
     expect(screen.getByTestId('pattern-input')).toHaveValue('[a-z]')
+    expect(screen.getByTestId('flags-input')).toHaveValue('gi')
   })
 })

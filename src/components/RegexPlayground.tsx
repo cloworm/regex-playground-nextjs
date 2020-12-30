@@ -89,6 +89,7 @@ const RegexPlayground: FunctionComponent = () => {
                       autoCorrect='off'
                       value={flags}
                       onChange={handleFlagsChange}
+                      data-testid='flags-input'
                     />
                   </span>
                 </div>
@@ -111,11 +112,15 @@ const RegexPlayground: FunctionComponent = () => {
                       value={value}
                       onChange={(value) => {
                         setMatches((prevMatches) => {
-                          return [
-                            ...prevMatches.slice(0, i),
-                            value,
-                            ...prevMatches.slice(i + 1),
-                          ]
+                          if (prevMatches)
+                            return [
+                              ...prevMatches.slice(0, i),
+                              value,
+                              ...prevMatches.slice(i + 1),
+                            ]
+                          else {
+                            return [value]
+                          }
                         })
                       }}
                     />
@@ -126,10 +131,14 @@ const RegexPlayground: FunctionComponent = () => {
             <button role='button'
               onClick={() => {
                 setMatches((prevMatches) => {
-                  return [
-                    ...prevMatches,
-                    '',
-                  ]
+                  if (prevMatches)
+                    return [
+                      ...prevMatches,
+                      '',
+                    ]
+                  else {
+                    return ['']
+                  }
                 })
               }}
             >
@@ -139,9 +148,13 @@ const RegexPlayground: FunctionComponent = () => {
               matches.length > 1 && <button role='button'
                 onClick={() => {
                   setMatches((prevMatches) => {
-                    return [
-                      ...prevMatches.slice(0, prevMatches.length - 1),
-                    ]
+                    if (prevMatches)
+                      return [
+                        ...prevMatches.slice(0, prevMatches.length - 1),
+                      ]
+                    else {
+                      return []
+                    }
                   })
                 }}
               >
