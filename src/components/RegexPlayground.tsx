@@ -10,7 +10,7 @@ const RegexPlayground: FunctionComponent = () => {
   const isMounted = useIsMounted()
   const [matches, setMatches] = useQueryParam('matches[]', withDefault(ArrayParam, ['']))
 
-  const onClick = useCallback(() => {
+  const handleClick = useCallback(() => {
     setMatches((prevMatches) => {
       if (!prevMatches) return []
       return [
@@ -49,7 +49,7 @@ const RegexPlayground: FunctionComponent = () => {
       }
 
       <div className="text-center text-white">
-        <FabButton onClick={onClick}>
+        <FabButton onClick={handleClick}>
           <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>

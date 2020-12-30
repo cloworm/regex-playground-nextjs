@@ -14,7 +14,7 @@ const NextJsQueryParamProvider: FunctionComponent = ({
   const pathname = match ? match[0] : router.asPath
   const location = useMemo(
     () =>
-      process.browser
+      (process as any).browser
         ? window.location
         : ({
           search: router.asPath.replace(/[^?]+/u, ''),
