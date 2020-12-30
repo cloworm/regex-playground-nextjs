@@ -18,7 +18,7 @@ const MatchBox: FunctionComponent<MatchBoxProps> = ({
     onChange(event.target.value)
   }, [onChange])
 
-  const match = useMemo<RegExpMatchArray | void>(() => {
+  const match = useMemo<RegExpMatchArray | null>(() => {
     return value.match(pattern)
   }, [value, pattern])
 
@@ -77,6 +77,7 @@ const RegexPlayground: FunctionComponent = () => {
                       autoCorrect='off'
                       value={pattern}
                       onChange={handlePatternChange}
+                      data-testid='pattern-input'
                     />
                     <span>/</span>
                   </span>
@@ -102,7 +103,7 @@ const RegexPlayground: FunctionComponent = () => {
             </div>
             <br />
             {
-              matches.map((value, i) => {
+              (matches as string[]).map((value, i) => {
                 return (
                   <div key={i}>
                     <MatchBox
