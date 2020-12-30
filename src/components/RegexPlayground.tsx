@@ -18,7 +18,7 @@ const MatchBox: FunctionComponent<MatchBoxProps> = ({
     onChange(event.target.value)
   }, [onChange])
 
-  const match = useMemo<RegExpMatchArray | void>(() => {
+  const match = useMemo<RegExpMatchArray | null>(() => {
     return value.match(pattern)
   }, [value, pattern])
 
@@ -29,7 +29,7 @@ const MatchBox: FunctionComponent<MatchBoxProps> = ({
 
     <h3>Match groups:</h3>
     {match ? match.slice(1).map((group, idx) => {
-      return <div>{idx + 1}: {group}</div>
+      return <div key={idx}>{idx + 1}: {group}</div>
     }) : 'No matches yet'}
   </div>
 }
@@ -42,22 +42,22 @@ const RegexPlayground: FunctionComponent = () => {
 
   const handlePatternChange = useCallback((event) => {
     setPattern(event.target.value)
-  }, [])
+  }, [setPattern])
   const handleFlagsChange = useCallback((event) => {
     setFlags(event.target.value)
-  }, [])
+  }, [setFlags])
   const handleClickClear = useCallback(() => {
     setFlags('')
     setPattern('')
-  }, [])
+  }, [setFlags, setPattern])
 
   let re: RegExp
-  let errorMessage: string|void
+  // let errorMessage: string|void
   try {
     re = new RegExp(pattern, flags)
   } catch(err) {
     re = new RegExp('')
-    errorMessage = err.message
+    // errorMessage = err.message
   }
 
   if (!isMounted) return <div />
@@ -77,6 +77,7 @@ const RegexPlayground: FunctionComponent = () => {
                       autoCorrect='off'
                       value={pattern}
                       onChange={handlePatternChange}
+                      data-testid='pattern-input'
                     />
                     <span>/</span>
                   </span>
@@ -88,6 +89,7 @@ const RegexPlayground: FunctionComponent = () => {
                       autoCorrect='off'
                       value={flags}
                       onChange={handleFlagsChange}
+                      data-testid='flags-input'
                     />
                   </span>
                 </div>
@@ -102,7 +104,7 @@ const RegexPlayground: FunctionComponent = () => {
             </div>
             <br />
             {
-              matches.map((value, i) => {
+              (matches as string[]).map((value, i) => {
                 return (
                   <div key={i}>
                     <MatchBox
@@ -110,11 +112,15 @@ const RegexPlayground: FunctionComponent = () => {
                       value={value}
                       onChange={(value) => {
                         setMatches((prevMatches) => {
-                          return [
-                            ...prevMatches.slice(0, i),
-                            value,
-                            ...prevMatches.slice(i + 1),
-                          ]
+                          if (prevMatches)
+                            return [
+                              ...prevMatches.slice(0, i),
+                              value,
+                              ...prevMatches.slice(i + 1),
+                            ]
+                          else {
+                            return [value]
+                          }
                         })
                       }}
                     />
@@ -125,10 +131,14 @@ const RegexPlayground: FunctionComponent = () => {
             <button role='button'
               onClick={() => {
                 setMatches((prevMatches) => {
-                  return [
-                    ...prevMatches,
-                    '',
-                  ]
+                  if (prevMatches)
+                    return [
+                      ...prevMatches,
+                      '',
+                    ]
+                  else {
+                    return ['']
+                  }
                 })
               }}
             >
@@ -138,9 +148,13 @@ const RegexPlayground: FunctionComponent = () => {
               matches.length > 1 && <button role='button'
                 onClick={() => {
                   setMatches((prevMatches) => {
-                    return [
-                      ...prevMatches.slice(0, prevMatches.length - 1),
-                    ]
+                    if (prevMatches)
+                      return [
+                        ...prevMatches.slice(0, prevMatches.length - 1),
+                      ]
+                    else {
+                      return []
+                    }
                   })
                 }}
               >
