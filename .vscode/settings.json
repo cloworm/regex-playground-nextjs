@@ -1,10 +1,14 @@
 {
   "cSpell.ignoreWords": [
     "cloworm",
+    "matchgroup",
     "nextjs",
     "preconnect",
+    "rerender",
     "semibold",
     "tailwindcss",
-    "testid"
+    "testid",
+    "textarea",
+    "textareas"
   ]
 }
