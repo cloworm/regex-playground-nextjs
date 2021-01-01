@@ -9,6 +9,7 @@ import useQueryParams from '../hooks/useQueryParams'
 const RegexPlayground: FunctionComponent = () => {
   const isMounted = useIsMounted()
   const [{ matches }, setQuery] = useQueryParams()
+  const matchesNotEmpty: string[] = matches.length === 0 ? [''] : matches as string[]
 
   const handleClick = useCallback(() => {
     setQuery((prevQuery) => {
@@ -31,7 +32,7 @@ const RegexPlayground: FunctionComponent = () => {
       </div>
 
       {
-        (matches as string[]).map((match: string, idx: number) => {
+        matchesNotEmpty.map((match: string, idx: number) => {
           return (
             <Match
               key={idx}
@@ -53,7 +54,7 @@ const RegexPlayground: FunctionComponent = () => {
       }
 
       <div className="text-center text-white">
-        <FabButton onClick={handleClick}>
+        <FabButton onClick={handleClick} name='add-match'>
           <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
