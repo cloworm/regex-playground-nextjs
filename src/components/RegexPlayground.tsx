@@ -35,6 +35,7 @@ const RegexPlayground: FunctionComponent = () => {
         matchesNotEmpty.map((match: string, idx: number) => {
           return (
             <Match
+              id={`match-${idx}`}
               key={idx}
               value={match}
               onChange={(value) => {
