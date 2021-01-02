@@ -49,6 +49,32 @@ const expectMatchGroups = ({
   })
 }
 
+const expectAppValues = ({
+  actualPath,
+  expectedPath,
+  pattern,
+  flags,
+  matchBoxes,
+}: {
+  actualPath: string,
+  expectedPath: string,
+  pattern: string,
+  flags: string,
+  matchBoxes: string[],
+}): void => {
+  expect(actualPath).toEqual(expectedPath)
+  const patternInput: HTMLElement = screen.getByRole('textbox', { name: 'pattern' })
+  const flagsInput: HTMLElement = screen.getByRole('textbox', { name: 'flags' })
+
+  expect(patternInput).toHaveValue(pattern)
+  expect(flagsInput).toHaveValue(flags)
+
+  matchBoxes.forEach((matchText, idx) => {
+    const matchTextArea: HTMLElement = screen.getByTestId(`match-${idx}`)
+    expect(matchTextArea).toHaveValue(matchText)
+  })
+}
+
 describe('Index', () => {
   test('renders the regex pattern from query params', async () => {
     let path = '/?pattern=[a-z]%2B&flags=gi'
@@ -61,18 +87,20 @@ describe('Index', () => {
     const { container, rerender } = render(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
 
     const patternInput: HTMLElement = screen.getByRole('textbox', { name: 'pattern' })
-    expect(patternInput).toHaveValue('[a-z]+')
-
     const flagsInput: HTMLElement = screen.getByRole('textbox', { name: 'flags' })
-    expect(flagsInput).toHaveValue('gi')
-
     const match0Textarea: HTMLElement = screen.getByTestId('match-0')
     fireEvent.change(match0Textarea, { target: { value: 'Hello... World 12345 ok!' } })
-    expect(path).toEqual('/?flags=gi&matches=Hello...%20World%2012345%20ok%21&pattern=%5Ba-z%5D%2B')
     rerender(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
-    expect(match0Textarea).toHaveValue('Hello... World 12345 ok!')
-    expect(patternInput).toHaveValue('[a-z]+')
-    expect(flagsInput).toHaveValue('gi')
+
+    expectAppValues({
+      actualPath: path,
+      expectedPath: '/?flags=gi&matches=Hello...%20World%2012345%20ok%21&pattern=%5Ba-z%5D%2B',
+      pattern: '[a-z]+',
+      flags: 'gi',
+      matchBoxes: [
+        'Hello... World 12345 ok!',
+      ],
+    })
 
     expectMatchGroups({
       container,
@@ -87,9 +115,18 @@ describe('Index', () => {
 
     const match1Textarea: HTMLElement = screen.getByTestId('match-1')
     fireEvent.change(match1Textarea, { target: { value: '555-555-12345' } })
-    expect(path).toEqual('/?flags=gi&matches=Hello...%20World%2012345%20ok%21&matches=555-555-12345&pattern=%5Ba-z%5D%2B')
     rerender(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
-    expect(match1Textarea).toHaveValue('555-555-12345')
+
+    expectAppValues({
+      actualPath: path,
+      expectedPath: '/?flags=gi&matches=Hello...%20World%2012345%20ok%21&matches=555-555-12345&pattern=%5Ba-z%5D%2B',
+      pattern: '[a-z]+',
+      flags: 'gi',
+      matchBoxes: [
+        'Hello... World 12345 ok!',
+        '555-555-12345',
+      ],
+    })
 
     expectMatchGroups({
       container,
@@ -99,18 +136,32 @@ describe('Index', () => {
     })
 
     fireEvent.change(patternInput, { target: { value: '[0-9]+' } })
-    expect(path).toEqual('/?flags=gi&matches=Hello...%20World%2012345%20ok%21&matches=555-555-12345&pattern=%5B0-9%5D%2B')
     rerender(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
-    expect(match0Textarea).toHaveValue('Hello... World 12345 ok!')
-    expect(patternInput).toHaveValue('[0-9]+')
-    expect(flagsInput).toHaveValue('gi')
+
+    expectAppValues({
+      actualPath: path,
+      expectedPath: '/?flags=gi&matches=Hello...%20World%2012345%20ok%21&matches=555-555-12345&pattern=%5B0-9%5D%2B',
+      pattern: '[0-9]+',
+      flags: 'gi',
+      matchBoxes: [
+        'Hello... World 12345 ok!',
+        '555-555-12345',
+      ],
+    })
 
     fireEvent.change(flagsInput, { target: { value: '' } })
-    expect(path).toEqual('/?flags=&matches=Hello...%20World%2012345%20ok%21&matches=555-555-12345&pattern=%5B0-9%5D%2B')
     rerender(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
-    expect(match0Textarea).toHaveValue('Hello... World 12345 ok!')
-    expect(patternInput).toHaveValue('[0-9]+')
-    expect(flagsInput).toHaveValue('')
+
+    expectAppValues({
+      actualPath: path,
+      expectedPath: '/?flags=&matches=Hello...%20World%2012345%20ok%21&matches=555-555-12345&pattern=%5B0-9%5D%2B',
+      pattern: '[0-9]+',
+      flags: '',
+      matchBoxes: [
+        'Hello... World 12345 ok!',
+        '555-555-12345',
+      ],
+    })
 
     // No longer using global flag, so only the first occurrence should be found.
     expectMatchGroups({
