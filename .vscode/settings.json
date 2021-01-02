@@ -9,6 +9,8 @@
     "tailwindcss",
     "testid",
     "textarea",
-    "textareas"
+    "textareas",
+    "unhighlighted",
+    "unmatches"
   ]
 }

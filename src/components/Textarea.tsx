@@ -32,7 +32,7 @@ const Textarea: FunctionComponent<Props> = ({
           value={value}
           highlight={{ highlight: pattern, className: 'bg-theme_lightSkyBlue' }}
           onChange={onChange}
-          containerClassName="w-full"
+          containerClassName={`w-full ${id}-highlight-text-area-container`}
           style={{ width: '100%', border: 'none' }}
         />
       </div>

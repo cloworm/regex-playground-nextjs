@@ -11,11 +11,10 @@ const FabButton: FunctionComponent<Props> = ({ children, name, onClick }) => {
       role='button'
       type='button'
       onClick={onClick}
-      name={name}
+      aria-label={name}
       className="w-10 h-10 p-2 rounded-full bg-gradient-to-br to-theme_slateBlue from-theme_hotPink shadow"
     >
       {children}
-      <span className='hidden'>{name}</span>
     </button>
   )
 }
