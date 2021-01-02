@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, within } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import { useRouter } from 'next/router'
 import { UrlObject } from 'url'
@@ -19,7 +19,7 @@ describe('Index', () => {
         path = `${pathname}${search}`
       },
     }))
-    const { rerender } = render(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
+    const { container, rerender } = render(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
 
     const patternInput: HTMLElement = screen.getByRole('textbox', { name: 'pattern' })
     expect(patternInput).toHaveValue('[a-z]+')
@@ -27,13 +27,11 @@ describe('Index', () => {
     const flagsInput: HTMLElement = screen.getByRole('textbox', { name: 'flags' })
     expect(flagsInput).toHaveValue('gi')
 
-    // To add more match textareas:
-    // fireEvent.click(screen.getByRole('button', { name: 'add-match' }))
-    const matchTextarea: HTMLElement = screen.getByTestId('match-0')
-    fireEvent.change(matchTextarea, { target: { value: 'Hello... World 12345 ok!' } })
+    const match0Textarea: HTMLElement = screen.getByTestId('match-0')
+    fireEvent.change(match0Textarea, { target: { value: 'Hello... World 12345 ok!' } })
     expect(path).toEqual('/?flags=gi&matches=Hello...%20World%2012345%20ok%21&pattern=%5Ba-z%5D%2B')
     rerender(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
-    expect(matchTextarea).toHaveValue('Hello... World 12345 ok!')
+    expect(match0Textarea).toHaveValue('Hello... World 12345 ok!')
     expect(patternInput).toHaveValue('[a-z]+')
     expect(flagsInput).toHaveValue('gi')
 
@@ -43,22 +41,71 @@ describe('Index', () => {
     expect(screen.getByTestId('match-0-matchgroup-1')).toHaveTextContent('World')
     expect(screen.getByTestId('match-0-matchgroup-2')).toHaveTextContent('ok')
 
-    // TODO: Expect proper text area highlights.
+    // TODO: Refactor into helper function
+    let textareaContainer = container.getElementsByClassName('match-0-highlight-text-area-container')[0]
+    let highlightedAreas = textareaContainer.querySelectorAll('div > div > div > mark')
+    let unhighlightedAreas = textareaContainer.querySelectorAll('div > div > div > span')
+    expect(highlightedAreas.length).toEqual(3)
+    expect(unhighlightedAreas.length).toEqual(3)
+    expect(highlightedAreas[0].innerHTML).toEqual('Hello')
+    expect(highlightedAreas[1].innerHTML).toEqual('World')
+    expect(highlightedAreas[2].innerHTML).toEqual('ok')
+    expect(unhighlightedAreas[0].innerHTML).toEqual('... ')
+    expect(unhighlightedAreas[1].innerHTML).toEqual(' 12345 ')
+    expect(unhighlightedAreas[2].innerHTML).toEqual('!')
+
+    // Add another match text area.
+    fireEvent.click(screen.getByRole('button', { name: 'add-match' }))
+    rerender(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
+
+    const match1Textarea: HTMLElement = screen.getByTestId('match-1')
+    fireEvent.change(match1Textarea, { target: { value: '555-555-12345' } })
+    expect(path).toEqual('/?flags=gi&matches=Hello...%20World%2012345%20ok%21&matches=555-555-12345&pattern=%5Ba-z%5D%2B')
+    rerender(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
+    expect(match1Textarea).toHaveValue('555-555-12345')
+
+    expect(screen.getByTestId('match-1-paragraph')).toHaveTextContent('No Matches Found')
+    expect(screen.getByTestId('match-1-count')).toHaveTextContent('0')
+    expect(screen.queryByTestId('match-1-matchgroup-0')).not.toBeInTheDocument()
+
+    textareaContainer = container.getElementsByClassName('match-1-highlight-text-area-container')[0]
+    highlightedAreas = textareaContainer.querySelectorAll('div > div > div > mark')
+    unhighlightedAreas = textareaContainer.querySelectorAll('div > div > div > span')
+    expect(highlightedAreas.length).toEqual(0)
+    expect(unhighlightedAreas.length).toEqual(1)
+    expect(unhighlightedAreas[0].innerHTML).toEqual('555-555-12345')
 
     fireEvent.change(patternInput, { target: { value: '[0-9]+' } })
-    expect(path).toEqual('/?flags=gi&matches=Hello...%20World%2012345%20ok%21&pattern=%5B0-9%5D%2B')
+    expect(path).toEqual('/?flags=gi&matches=Hello...%20World%2012345%20ok%21&matches=555-555-12345&pattern=%5B0-9%5D%2B')
     rerender(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
-    expect(matchTextarea).toHaveValue('Hello... World 12345 ok!')
+    expect(match0Textarea).toHaveValue('Hello... World 12345 ok!')
     expect(patternInput).toHaveValue('[0-9]+')
     expect(flagsInput).toHaveValue('gi')
 
     fireEvent.change(flagsInput, { target: { value: '' } })
-    expect(path).toEqual('/?flags=&matches=Hello...%20World%2012345%20ok%21&pattern=%5B0-9%5D%2B')
+    expect(path).toEqual('/?flags=&matches=Hello...%20World%2012345%20ok%21&matches=555-555-12345&pattern=%5B0-9%5D%2B')
     rerender(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
-    expect(matchTextarea).toHaveValue('Hello... World 12345 ok!')
+    expect(match0Textarea).toHaveValue('Hello... World 12345 ok!')
     expect(patternInput).toHaveValue('[0-9]+')
     expect(flagsInput).toHaveValue('')
 
-    // TODO: Expect updated match groups and proper text area highlights.
+    // No longer using global flag, so only the first occurrence should be found.
+
+    textareaContainer = container.getElementsByClassName('match-0-highlight-text-area-container')[0]
+    highlightedAreas = textareaContainer.querySelectorAll('div > div > div > mark')
+    unhighlightedAreas = textareaContainer.querySelectorAll('div > div > div > span')
+    expect(highlightedAreas.length).toEqual(1)
+    expect(unhighlightedAreas.length).toEqual(2)
+    expect(highlightedAreas[0].innerHTML).toEqual('12345')
+    expect(unhighlightedAreas[0].innerHTML).toEqual('Hello... World ')
+    expect(unhighlightedAreas[1].innerHTML).toEqual(' ok!')
+
+    textareaContainer = container.getElementsByClassName('match-1-highlight-text-area-container')[0]
+    highlightedAreas = textareaContainer.querySelectorAll('div > div > div > mark')
+    unhighlightedAreas = textareaContainer.querySelectorAll('div > div > div > span')
+    expect(highlightedAreas.length).toEqual(1)
+    expect(unhighlightedAreas.length).toEqual(1)
+    expect(highlightedAreas[0].innerHTML).toEqual('555')
+    expect(unhighlightedAreas[0].innerHTML).toEqual('-555-12345')
   })
 })
