@@ -10,6 +10,45 @@ const mockedUseRouter = useRouter as jest.Mock<any>
 
 import Index from '../pages/index'
 
+const expectMatchGroups = ({
+  container,
+  matchIdx,
+  matches,
+  unmatches,
+}: {
+  container: Element,
+  matchIdx: number,
+  matches: string[],
+  unmatches: string[],
+}): void => {
+  expect(screen.getByTestId(`match-${matchIdx}-paragraph`)).toHaveTextContent(matches.length ? 'Match Found!' : 'No Matches Found')
+  expect(screen.getByTestId(`match-${matchIdx}-count`)).toHaveTextContent(matches.length.toString())
+
+  if (matches.length) {
+    expect(screen.queryByTestId(`match-${matchIdx}-matchgroup-0`)).toBeInTheDocument()
+  } else {
+    expect(screen.queryByTestId(`match-${matchIdx}-matchgroup-0`)).not.toBeInTheDocument()
+  }
+
+  matches.forEach((matchText, idx) => {
+    expect(screen.getByTestId(`match-${matchIdx}-matchgroup-${idx}`)).toHaveTextContent(matchText)
+  })
+
+  const textareaContainer = container.getElementsByClassName(`match-${matchIdx}-highlight-text-area-container`)[0]
+  const highlightedAreas = textareaContainer.querySelectorAll('div > div > div > mark')
+  const unhighlightedAreas = textareaContainer.querySelectorAll('div > div > div > span')
+  expect(highlightedAreas.length).toEqual(matches.length)
+  expect(unhighlightedAreas.length).toEqual(unmatches.length)
+
+  matches.forEach((matchText, idx) => {
+    expect(highlightedAreas[idx].innerHTML).toEqual(matchText)
+  })
+
+  unmatches.forEach((matchText, idx) => {
+    expect(unhighlightedAreas[idx].innerHTML).toEqual(matchText)
+  })
+}
+
 describe('Index', () => {
   test('renders the regex pattern from query params', async () => {
     let path = '/?pattern=[a-z]%2B&flags=gi'
@@ -35,24 +74,12 @@ describe('Index', () => {
     expect(patternInput).toHaveValue('[a-z]+')
     expect(flagsInput).toHaveValue('gi')
 
-    expect(screen.getByTestId('match-0-paragraph')).toHaveTextContent('Match Found!')
-    expect(screen.getByTestId('match-0-count')).toHaveTextContent('3')
-    expect(screen.getByTestId('match-0-matchgroup-0')).toHaveTextContent('Hello')
-    expect(screen.getByTestId('match-0-matchgroup-1')).toHaveTextContent('World')
-    expect(screen.getByTestId('match-0-matchgroup-2')).toHaveTextContent('ok')
-
-    // TODO: Refactor into helper function
-    let textareaContainer = container.getElementsByClassName('match-0-highlight-text-area-container')[0]
-    let highlightedAreas = textareaContainer.querySelectorAll('div > div > div > mark')
-    let unhighlightedAreas = textareaContainer.querySelectorAll('div > div > div > span')
-    expect(highlightedAreas.length).toEqual(3)
-    expect(unhighlightedAreas.length).toEqual(3)
-    expect(highlightedAreas[0].innerHTML).toEqual('Hello')
-    expect(highlightedAreas[1].innerHTML).toEqual('World')
-    expect(highlightedAreas[2].innerHTML).toEqual('ok')
-    expect(unhighlightedAreas[0].innerHTML).toEqual('... ')
-    expect(unhighlightedAreas[1].innerHTML).toEqual(' 12345 ')
-    expect(unhighlightedAreas[2].innerHTML).toEqual('!')
+    expectMatchGroups({
+      container,
+      matchIdx: 0,
+      matches: ['Hello', 'World', 'ok'],
+      unmatches: ['... ', ' 12345 ', '!'],
+    })
 
     // Add another match text area.
     fireEvent.click(screen.getByRole('button', { name: 'add-match' }))
@@ -64,16 +91,12 @@ describe('Index', () => {
     rerender(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
     expect(match1Textarea).toHaveValue('555-555-12345')
 
-    expect(screen.getByTestId('match-1-paragraph')).toHaveTextContent('No Matches Found')
-    expect(screen.getByTestId('match-1-count')).toHaveTextContent('0')
-    expect(screen.queryByTestId('match-1-matchgroup-0')).not.toBeInTheDocument()
-
-    textareaContainer = container.getElementsByClassName('match-1-highlight-text-area-container')[0]
-    highlightedAreas = textareaContainer.querySelectorAll('div > div > div > mark')
-    unhighlightedAreas = textareaContainer.querySelectorAll('div > div > div > span')
-    expect(highlightedAreas.length).toEqual(0)
-    expect(unhighlightedAreas.length).toEqual(1)
-    expect(unhighlightedAreas[0].innerHTML).toEqual('555-555-12345')
+    expectMatchGroups({
+      container,
+      matchIdx: 1,
+      matches: [],
+      unmatches: ['555-555-12345'],
+    })
 
     fireEvent.change(patternInput, { target: { value: '[0-9]+' } })
     expect(path).toEqual('/?flags=gi&matches=Hello...%20World%2012345%20ok%21&matches=555-555-12345&pattern=%5B0-9%5D%2B')
@@ -90,22 +113,18 @@ describe('Index', () => {
     expect(flagsInput).toHaveValue('')
 
     // No longer using global flag, so only the first occurrence should be found.
+    expectMatchGroups({
+      container,
+      matchIdx: 0,
+      matches: ['12345'],
+      unmatches: ['Hello... World ', ' ok!'],
+    })
 
-    textareaContainer = container.getElementsByClassName('match-0-highlight-text-area-container')[0]
-    highlightedAreas = textareaContainer.querySelectorAll('div > div > div > mark')
-    unhighlightedAreas = textareaContainer.querySelectorAll('div > div > div > span')
-    expect(highlightedAreas.length).toEqual(1)
-    expect(unhighlightedAreas.length).toEqual(2)
-    expect(highlightedAreas[0].innerHTML).toEqual('12345')
-    expect(unhighlightedAreas[0].innerHTML).toEqual('Hello... World ')
-    expect(unhighlightedAreas[1].innerHTML).toEqual(' ok!')
-
-    textareaContainer = container.getElementsByClassName('match-1-highlight-text-area-container')[0]
-    highlightedAreas = textareaContainer.querySelectorAll('div > div > div > mark')
-    unhighlightedAreas = textareaContainer.querySelectorAll('div > div > div > span')
-    expect(highlightedAreas.length).toEqual(1)
-    expect(unhighlightedAreas.length).toEqual(1)
-    expect(highlightedAreas[0].innerHTML).toEqual('555')
-    expect(unhighlightedAreas[0].innerHTML).toEqual('-555-12345')
+    expectMatchGroups({
+      container,
+      matchIdx: 1,
+      matches: ['555'],
+      unmatches: ['-555-12345'],
+    })
   })
 })
