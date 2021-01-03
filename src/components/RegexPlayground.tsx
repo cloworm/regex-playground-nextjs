@@ -62,7 +62,20 @@ const RegexPlayground: FunctionComponent = () => {
                     ]
                   }
                 })
-              }} />
+              }}
+              onClickRemove={() => {
+                setQuery(() => {
+                  // Ditto RE: useQueryParams bug. Ideally we could use prevQuery here.
+                  if (!matches) return { matches: [] }
+                  return {
+                    matches: [
+                      ...matches.slice(0, idx),
+                      ...matches.slice(idx + 1),
+                    ]
+                  }
+                })
+              }}
+            />
           )
         })
       }

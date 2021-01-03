@@ -8,17 +8,24 @@ interface Props {
   id: string,
   value: string
   onChange: (value: string) => void
+  onClickRemove: () => void
 }
 
 const Match: FunctionComponent<Props> = ({
   id,
   value,
   onChange,
+  onClickRemove,
 }) => {
   const [{ pattern, flags }] = useQueryParams()
-  const handleChange = useCallback((event) => {
+  const handleChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
     onChange(event.target.value)
   }, [onChange])
+
+  const handleClickRemove = useCallback((event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    event.preventDefault()
+    onClickRemove()
+  }, [onClickRemove])
 
   const regEx = useMemo<RegExp|null>(() => {
     if (!pattern) return null
@@ -42,7 +49,7 @@ const Match: FunctionComponent<Props> = ({
     <div className="mb-6 shadow">
       <Card color="pink">
 
-        <Textarea id={id} label="text" value={value} onChange={handleChange} pattern={regEx} />
+        <Textarea id={id} label="text" value={value} onChange={handleChange} onClickRemove={handleClickRemove} pattern={regEx} />
 
         <p data-testid={`${id}-paragraph`} className="text-right text-theme_textGray text-sm uppercase font-semibold">{match && match?.length > 0 ? 'Match Found!' : 'No Matches Found'}</p>
 
