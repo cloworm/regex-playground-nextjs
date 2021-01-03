@@ -25,7 +25,7 @@ const Textarea: FunctionComponent<Props> = ({
           htmlFor={id}
           className="uppercase font-semibold text-sm tracking-wide"
         >{label}</label>
-        <a onClick={onClickRemove} href="#remove" className="text-theme_textGray">✕</a>
+        <a data-testid={`${id}-remove`} onClick={onClickRemove} href="#remove" className="text-theme_textGray">✕</a>
       </div>
       <div className="mb-0.5 px-3 py-2 border-3 border-black rounded-md w-full focus-within:border-none focus-within:border-theme_hotPink focus-within:ring focus-within:ring-theme_hotPink focus-within:ring-opacity-50">
         <HighlightWithinTextarea

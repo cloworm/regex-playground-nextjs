@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import { useRouter } from 'next/router'
@@ -9,6 +9,8 @@ import NextJsQueryParamProvider from '../providers/NextJsQueryParamProvider'
 const mockedUseRouter = useRouter as jest.Mock<any>
 
 import Index from '../pages/index'
+
+const TestComponent: FunctionComponent = () => <NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>
 
 const expectMatchGroups = ({
   container,
@@ -84,13 +86,13 @@ describe('Index', () => {
         path = `${pathname}${search}`
       },
     }))
-    const { container, rerender } = render(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
+    const { container, rerender } = render(<TestComponent />)
 
     const patternInput: HTMLElement = screen.getByRole('textbox', { name: 'pattern' })
     const flagsInput: HTMLElement = screen.getByRole('textbox', { name: 'flags' })
     const match0Textarea: HTMLElement = screen.getByTestId('match-0')
     fireEvent.change(match0Textarea, { target: { value: 'Hello... World 12345 ok!' } })
-    rerender(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
+    rerender(<TestComponent />)
 
     expectAppValues({
       actualPath: path,
@@ -111,11 +113,11 @@ describe('Index', () => {
 
     // Add another match text area.
     fireEvent.click(screen.getByRole('button', { name: 'add-match' }))
-    rerender(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
+    rerender(<TestComponent />)
 
     const match1Textarea: HTMLElement = screen.getByTestId('match-1')
     fireEvent.change(match1Textarea, { target: { value: '555-555-12345' } })
-    rerender(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
+    rerender(<TestComponent />)
 
     expectAppValues({
       actualPath: path,
@@ -136,7 +138,7 @@ describe('Index', () => {
     })
 
     fireEvent.change(patternInput, { target: { value: '[0-9]+' } })
-    rerender(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
+    rerender(<TestComponent />)
 
     expectAppValues({
       actualPath: path,
@@ -150,7 +152,7 @@ describe('Index', () => {
     })
 
     fireEvent.change(flagsInput, { target: { value: '' } })
-    rerender(<NextJsQueryParamProvider><Index /></NextJsQueryParamProvider>)
+    rerender(<TestComponent />)
 
     expectAppValues({
       actualPath: path,
@@ -176,6 +178,32 @@ describe('Index', () => {
       matchIdx: 1,
       matches: ['555'],
       unmatches: ['-555-12345'],
+    })
+
+    fireEvent.click(screen.getByTestId('match-0-remove'))
+    rerender(<TestComponent />)
+
+    expectAppValues({
+      actualPath: path,
+      expectedPath: '/?flags=&matches=555-555-12345&pattern=%5B0-9%5D%2B',
+      pattern: '[0-9]+',
+      flags: '',
+      matchBoxes: [
+        '555-555-12345',
+      ],
+    })
+
+    fireEvent.click(screen.getByTestId('match-0-remove'))
+    rerender(<TestComponent />)
+
+    expectAppValues({
+      actualPath: path,
+      expectedPath: '/?flags=&pattern=%5B0-9%5D%2B',
+      pattern: '[0-9]+',
+      flags: '',
+      matchBoxes: [
+        '',
+      ],
     })
   })
 })
