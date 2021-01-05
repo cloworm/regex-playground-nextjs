@@ -12,16 +12,28 @@ const RegexPlayground: FunctionComponent = () => {
   const matchesNotEmpty: string[] = matches.length === 0 ? [''] : matches as string[]
 
   const handleClick = useCallback(() => {
-    setQuery((prevQuery) => {
-      if (!prevQuery?.matches) return { matches: [] }
+    setQuery(() => {
+      if (!matches) return { matches: [] }
       return {
         matches: [
-          ...prevQuery.matches,
+          ...matches,
           '',
         ]
       }
     })
-  }, [setQuery])
+
+    // The following should be correct, however the query param library seems to be bugged.
+    // Repro: browser history back() and then change state. It acts like you never went back().
+    // setQuery((prevQuery) => {
+    //   if (!prevQuery?.matches) return { matches: [] }
+    //   return {
+    //     matches: [
+    //       ...prevQuery.matches,
+    //       '',
+    //     ]
+    //   }
+    // })
+  }, [setQuery, matches])
 
   if (!isMounted) return <div />
 
@@ -39,17 +51,31 @@ const RegexPlayground: FunctionComponent = () => {
               key={idx}
               value={match}
               onChange={(value) => {
-                setQuery((prevQuery) => {
-                  if (!prevQuery?.matches) return { matches: [] }
+                setQuery(() => {
+                  // Ditto RE: useQueryParams bug. Ideally we could use prevQuery here.
+                  if (!matches) return { matches: [] }
                   return {
                     matches: [
-                      ...prevQuery.matches.slice(0, idx),
+                      ...matches.slice(0, idx),
                       value,
-                      ...prevQuery.matches.slice(idx + 1),
+                      ...matches.slice(idx + 1),
                     ]
                   }
                 })
-              }} />
+              }}
+              onClickRemove={() => {
+                setQuery(() => {
+                  // Ditto RE: useQueryParams bug. Ideally we could use prevQuery here.
+                  if (!matches) return { matches: [] }
+                  return {
+                    matches: [
+                      ...matches.slice(0, idx),
+                      ...matches.slice(idx + 1),
+                    ]
+                  }
+                })
+              }}
+            />
           )
         })
       }
