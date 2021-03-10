@@ -1,12 +1,23 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useCallback } from 'react'
 
 interface Props {
   label: string
-  value: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  defaultValue: string
+  onChange: (event: string) => void
 }
 
-const Input: FunctionComponent<Props> = ({ label, value, onChange }) => {
+const Input: FunctionComponent<Props> = ({ label, defaultValue, onChange }) => {
+  // Normally I wouldn't like to use `defaultValue` (uncontrolled Input), but it solves the
+  // issue of the text cursor jumping to the end of the input after every keypress.
+  // The Input can still be "controlled" from the parent component, by providing a new `key`
+  // prop to force a new value. Think of `key` as the identifier for the session of the life
+  // of the input.
+  // For example, when the Clear button is clicked, or when a new RegEx Example is clicked,
+  // resetting all the Inputs to the new `defaultValue`.
+  const handleChange = useCallback(({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(value)
+  }, [onChange])
+
   return (
     <div>
       <div className="pb-0.5">
@@ -22,8 +33,8 @@ const Input: FunctionComponent<Props> = ({ label, value, onChange }) => {
           autoCapitalize="off"
           autoCorrect="off"
           autoComplete="off"
-          value={value}
-          onChange={onChange}
+          defaultValue={defaultValue}
+          onChange={handleChange}
         />
       </div>
     </div>

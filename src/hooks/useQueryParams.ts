@@ -5,6 +5,7 @@ const useQueryParams = () => {
   return useQueryParamsPkg({
     pattern: withDefault(StringParam, ''),
     flags: withDefault(StringParam, ''),
+    key: withDefault(StringParam, ''),
     matches: withDefault(ArrayParam, [''])
   })
 }

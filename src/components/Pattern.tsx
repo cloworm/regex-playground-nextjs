@@ -1,26 +1,28 @@
 import React, { FunctionComponent, useCallback } from 'react'
 
 import useQueryParams from '../hooks/useQueryParams'
+import generateKey from '../utils/generateKey'
 import Card from './Card'
 import Input from './Input'
 
 const Pattern: FunctionComponent = () => {
-  const [{ pattern, flags }, setQuery] = useQueryParams()
+  const [{ pattern, flags, key }, setQuery] = useQueryParams()
 
-  const handlePatternChange = useCallback((event) => {
+  const handlePatternChange = useCallback((value) => {
     setQuery({
-      pattern: event.target.value
+      pattern: value
     })
   }, [setQuery])
-  const handleFlagsChange = useCallback((event) => {
+  const handleFlagsChange = useCallback((value) => {
     setQuery({
-      flags: event.target.value
+      flags: value
     })
   }, [setQuery])
   const handleClickClear = useCallback(() => {
     setQuery({
       pattern: '',
-      flags: ''
+      flags: '',
+      key: generateKey(),
     })
   }, [setQuery])
 
@@ -28,7 +30,6 @@ const Pattern: FunctionComponent = () => {
   try {
     new RegExp(pattern, flags)
   } catch(err) {
-    new RegExp('')
     errorMessage = err.message
   }
 
@@ -36,10 +37,10 @@ const Pattern: FunctionComponent = () => {
     <Card>
       <div className="flex flex-col lg:flex-row space-x-2">
         <div className="w-9/12">
-          <Input label="pattern" value={pattern} onChange={handlePatternChange} />
+          <Input key={key} label="pattern" defaultValue={pattern} onChange={handlePatternChange} />
         </div>
         <div>
-          <Input label="flags" value={flags} onChange={handleFlagsChange} />
+          <Input key={key} label="flags" defaultValue={flags} onChange={handleFlagsChange} />
         </div>
       </div>
       <div>
