@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useCallback } from 'react'
 
+import generateKey from '../utils/generateKey'
 import useQueryParams from '../hooks/useQueryParams'
 import Card from './Card'
 
@@ -82,6 +83,7 @@ const Examples: FunctionComponent = () => {
     setQuery({
       pattern: example.pattern,
       flags: example.flags,
+      key: generateKey(),
       matches: example.matchBoxValues
     })
   }, [setQuery])
